@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>InternShield Analytics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 40px;
+            background: #f4f6f9;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        canvas {
+            max-width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .risk-high {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h1>InternShield Intelligence Dashboard</h1>
+
+<div class="grid">
+
+    <div class="card">
+        <h2>Verdict Distribution</h2>
+        <canvas id="verdictChart"></canvas>
+    </div>
+
+    <div class="card">
+        <h2>Risk Score Distribution</h2>
+        <canvas id="riskChart"></canvas>
+    </div>
+
+    <div class="card">
+        <h2>Weekly Submissions</h2>
+        <canvas id="trendChart"></canvas>
+    </div>
+
+    <div class="card">
+        <h2>Most Triggered Rules</h2>
+        <ul>
+            {% for rule in top_rules %}
+                <li>{{ rule.rule_name }} — {{ rule.count }} times</li>
+            {% empty %}
+                <li>No rule data.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+
+<div class="card" style="margin-top:30px;">
+    <h2>High Risk Internships</h2>
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Risk Score</th>
+        </tr>
+        {% for internship in high_risk %}
+        <tr>
+            <td>{{ internship.title }}</td>
+            <td class="risk-high">
+                {{ internship.detection.risk_score }}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="2">No high-risk internships.</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<script>
+    const verdictLabels = JSON.parse('{{ verdict_labels|escapejs }}');
+    const verdictCounts = JSON.parse('{{ verdict_counts|escapejs }}');
+    const trendLabels = JSON.parse('{{ trend_labels|escapejs }}');
+    const trendCounts = JSON.parse('{{ trend_counts|escapejs }}');
+    const riskScores = JSON.parse('{{ risk_scores|escapejs }}');
+
+    new Chart(document.getElementById('verdictChart'), {
+        type: 'pie',
+        data: {
+            labels: verdictLabels,
+            datasets: [{
+                data: verdictCounts,
+                backgroundColor: ['#28a745', '#fd7e14', '#dc3545']
+            }]
+        }
+    });
+
+    new Chart(document.getElementById('trendChart'), {
+        type: 'line',
+        data: {
+            labels: trendLabels,
+            datasets: [{
+                label: 'Submissions',
+                data: trendCounts,
+                borderColor: '#007bff',
+                fill: false
+            }]
+        }
+    });
+
+    new Chart(document.getElementById('riskChart'), {
+        type: 'bar',
+        data: {
+            labels: riskScores.map((_, i) => i + 1),
+            datasets: [{
+                label: 'Risk Score',
+                data: riskScores,
+                backgroundColor: '#6c757d'
+            }]
+        }
+    });
+</script>
+
+</body>
+</html>

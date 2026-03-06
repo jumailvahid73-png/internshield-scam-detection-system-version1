@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>InternShield</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            background: #f8fafc;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+<nav class="bg-white shadow-sm border-b">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+        <h1 class="text-xl font-semibold text-gray-800">
+            InternShield
+        </h1>
+        <div class="space-x-6 text-sm">
+            <a href="/" class="text-gray-600 hover:text-black">Check</a>
+            <a href="/analytics/" class="text-gray-600 hover:text-black">Analytics</a>
+            <a href="/admin/" class="text-gray-600 hover:text-black">Admin</a>
+        </div>
+    </div>
+</nav>
+
+<div class="max-w-6xl mx-auto px-6 py-10">
+    {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>
