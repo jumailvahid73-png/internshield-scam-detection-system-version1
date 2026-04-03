@@ -97,7 +97,7 @@ def _derive_verdict(score):
 
 
 # ======================================================
-# DOMAIN REPUTATION (NEW - SAFE ADDITION)
+# DOMAIN REPUTATION (FIXED SAFE)
 # ======================================================
 
 def _evaluate_domain(email, company):
@@ -119,7 +119,7 @@ def _evaluate_domain(email, company):
         score += 8
         contributions.append(("Suspicious domain TLD", 8))
 
-    # Existing company checks (UNCHANGED LOGIC)
+    # Existing company checks
     if company:
         if company.domain_resolves is False:
             score += 8
@@ -129,7 +129,8 @@ def _evaluate_domain(email, company):
             score += 6
             contributions.append(("No MX record", 6))
 
-        if company.domain_age_days:
+        # ✅ FIXED (was buggy)
+        if company.domain_age_days is not None:
             if company.domain_age_days < 15:
                 score += 15
                 contributions.append(("Very new domain (<15 days)", 15))
@@ -141,7 +142,7 @@ def _evaluate_domain(email, company):
 
 
 # ======================================================
-# CORE SCORING ENGINE (SAFE MODIFIED)
+# CORE SCORING ENGINE
 # ======================================================
 
 def _compute_score(internship, rules):
@@ -168,46 +169,46 @@ def _compute_score(internship, rules):
     # ---------------------------------
 
     if company and company.verified_status == "blacklisted":
-        return 100, [("Blacklisted company", 100)]
+        return 100, [(None, 100)]
 
     # ---------------------------------
-    # STRUCTURAL CHECKS (UNCHANGED)
+    # STRUCTURAL CHECKS
     # ---------------------------------
 
     if not company:
         if not email:
             rule_score += 25
-            contributions.append(("No company and no contact email", 25))
+            contributions.append((None, 25))
         else:
             rule_score += 10
-            contributions.append(("No registered company object", 10))
+            contributions.append((None, 10))
 
     if len(source.strip()) < 3:
         rule_score += 8
-        contributions.append(("Missing source information", 8))
+        contributions.append((None, 8))
 
     if not email:
         rule_score += 8
-        contributions.append(("No contact email", 8))
+        contributions.append((None, 8))
 
     if is_low_quality_text(description):
         rule_score += 8
-        contributions.append(("Low-quality description", 8))
+        contributions.append((None, 8))
 
     if title in {"internship", "work", "job", "part"}:
         rule_score += 8
-        contributions.append(("Generic job title", 8))
+        contributions.append((None, 8))
 
     # ---------------------------------
-    # DOMAIN REPUTATION (INSERTED HERE)
+    # DOMAIN
     # ---------------------------------
 
     d_score, d_contrib = _evaluate_domain(email, company)
     rule_score += d_score
-    contributions.extend(d_contrib)
+    contributions.extend([(None, v) for _, v in d_contrib])
 
     # ---------------------------------
-    # RULE ENGINE (UNCHANGED)
+    # RULE ENGINE
     # ---------------------------------
 
     triggered_rules = set()
@@ -239,13 +240,12 @@ def _compute_score(internship, rules):
 
         if rule.is_negative:
             rule_score -= weight
-            contributions.append((rule.name, -weight))
+            contributions.append((rule, -weight))
         else:
             rule_score += weight
-            contributions.append((rule.name, weight))
-
-    # ---------------------------------
-    # PATTERN ENGINE (UNCHANGED)
+            contributions.append((rule, weight))
+                # ---------------------------------
+    # PATTERN ENGINE
     # ---------------------------------
 
     pattern_features = extract_pattern_features(full_text)
@@ -254,11 +254,11 @@ def _compute_score(internship, rules):
 
     if pattern_score > 0:
         rule_score += pattern_score
-        contributions.append(("Pattern signals", pattern_score))
+        contributions.append((None, pattern_score))
 
     for key, value in pattern_features.items():
         if key != "pattern_score" and value > 0:
-            contributions.append((f"{key}_count", value))
+            contributions.append((None, value))
 
     # ---------------------------------
     # SOURCE RISK
@@ -266,7 +266,7 @@ def _compute_score(internship, rules):
 
     if source in {"telegram", "whatsapp"}:
         rule_score += 5
-        contributions.append(("High-risk source", 5))
+        contributions.append((None, 5))
 
     # ---------------------------------
     # NORMALIZATION
@@ -287,11 +287,11 @@ def _compute_score(internship, rules):
         ml_input = f"{title} {description} {email} {source}"
         ml_prob = predict_score(ml_input)
         ml_score = ml_prob * 100
-    except:
+    except Exception:
         ml_score = 0
 
     # ---------------------------------
-    # HYBRID (UNCHANGED)
+    # HYBRID
     # ---------------------------------
 
     if ml_score > 70:
@@ -313,7 +313,7 @@ def _compute_score(internship, rules):
 
     if len(triggered_rules) >= 4:
         final_score += 2
-        contributions.append(("Multiple risk signals", 2))
+        contributions.append((None, 2))
 
     final_score = max(0, min(final_score, 100))
 
@@ -321,7 +321,7 @@ def _compute_score(internship, rules):
 
 
 # ======================================================
-# EVERYTHING BELOW IS UNTOUCHED
+# EVERYTHING BELOW IS CONSISTENT + FIXED
 # ======================================================
 
 def detect_scam(internship_id):
@@ -337,13 +337,12 @@ def detect_scam(internship_id):
         get_active_rules()
     )
 
-    verdict, confidence = _derive_verdict(score)
+    verdict, _ = _derive_verdict(score) 
 
     return _save_result(
         internship,
         score,
         verdict,
-        confidence,
         contributions
     )
 
@@ -356,6 +355,12 @@ def detect_scam_bulk(queryset):
         queryset.select_related("company")
     )
 
+    # ✅ FIX: deactivate old latest detections
+    DetectionResult.objects.filter(
+        internship__in=internships,
+        is_latest=True
+    ).update(is_latest=False)
+
     detection_objects = []
     detection_map = {}
     contribution_objects = []
@@ -363,15 +368,15 @@ def detect_scam_bulk(queryset):
     for internship in internships:
 
         score, contributions = _compute_score(internship, rules)
-        verdict, confidence = _derive_verdict(score)
+        verdict, _ = _derive_verdict(score)
 
         detection_objects.append(
             DetectionResult(
                 internship=internship,
                 risk_score=score,
                 verdict=verdict,
-                confidence=confidence,
-                engine_version=ENGINE_VERSION
+                engine_version=ENGINE_VERSION,
+                is_latest=True
             )
         )
 
@@ -379,20 +384,12 @@ def detect_scam_bulk(queryset):
 
     with transaction.atomic():
 
-        DetectionResult.objects.bulk_create(
-            detection_objects,
-            update_conflicts=True,
-            unique_fields=["internship"],
-            update_fields=[
-                "risk_score",
-                "verdict",
-                "confidence",
-                "engine_version"
-            ]
-        )
+        # ✅ FIX: removed update_conflicts (was wrong for your schema)
+        DetectionResult.objects.bulk_create(detection_objects)
 
         detections = DetectionResult.objects.filter(
-            internship__in=internships
+            internship__in=internships,
+            is_latest=True
         )
 
         RuleContribution.objects.filter(
@@ -403,12 +400,13 @@ def detect_scam_bulk(queryset):
 
             contributions = detection_map[detection.internship_id]
 
-            for name, value in contributions:
+            for rule, value in contributions:
                 contribution_objects.append(
                     RuleContribution(
                         detection=detection,
-                        rule_name=name,
-                        score_added=value
+                        rule=rule,
+                        score_added=value,
+                        weight_snapshot=rule.weight if rule else 0
                     )
                 )
 
@@ -420,22 +418,27 @@ def detect_scam_bulk(queryset):
 def detect_outdated():
 
     outdated = Internship.objects.filter(
-        detection__engine_version__lt=ENGINE_VERSION
+        detections__engine_version__lt=ENGINE_VERSION
     )
 
     return detect_scam_bulk(outdated)
 
 
-def _save_result(internship, score, verdict, confidence, contributions):
+def _save_result(internship, score, verdict, contributions):
 
-    result, _ = DetectionResult.objects.update_or_create(
+    # ✅ FIX: deactivate previous latest
+    DetectionResult.objects.filter(
         internship=internship,
-        defaults={
-            "risk_score": score,
-            "verdict": verdict,
-            "confidence": confidence,
-            "engine_version": ENGINE_VERSION
-        }
+        is_latest=True
+    ).update(is_latest=False)
+
+    result = DetectionResult.objects.create(
+        internship=internship,
+        risk_score=score,
+        verdict=verdict,
+        probability=score / 100,
+        engine_version=ENGINE_VERSION,
+        is_latest=True
     )
 
     RuleContribution.objects.filter(detection=result).delete()
@@ -443,16 +446,16 @@ def _save_result(internship, score, verdict, confidence, contributions):
     RuleContribution.objects.bulk_create([
         RuleContribution(
             detection=result,
-            rule_name=name,
-            score_added=value
+            rule=rule,
+            score_added=value,
+            weight_snapshot=rule.weight if rule else 0
         )
-        for name, value in contributions
+        for rule, value in contributions
     ])
 
     return {
         "internship": internship.title,
         "score": score,
         "verdict": verdict,
-        "confidence": confidence,
         "contributions": contributions
     }

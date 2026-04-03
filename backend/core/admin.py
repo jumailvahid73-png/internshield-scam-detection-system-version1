@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from django.db.models import Count
+from django.db.models import Count, Prefetch
 
 from .models import (
     Company,
@@ -32,7 +32,7 @@ class RuleKeywordInline(admin.TabularInline):
 class RuleContributionInline(admin.TabularInline):
     model = RuleContribution
     extra = 0
-    readonly_fields = ("rule_name", "score_added")
+    readonly_fields = ("rule", "score_added", "weight_snapshot")
     can_delete = False
 
 
@@ -46,12 +46,14 @@ class DetectionResultAdmin(admin.ModelAdmin):
     list_display = (
         "internship",
         "risk_meter",
-        "verdict",
-        "confidence",
-        "checked_at",
+        "verdict_badge",
+        "probability",
+        "engine_version",
+        "is_latest",
+        "created_at",
     )
 
-    list_filter = ("verdict", "confidence", "checked_at")
+    list_filter = ("verdict", "engine_version", "is_latest")
     search_fields = ("internship__title",)
     readonly_fields = ("risk_meter",)
     inlines = [RuleContributionInline]
@@ -61,7 +63,7 @@ class DetectionResultAdmin(admin.ModelAdmin):
         return super().get_queryset(request).select_related("internship")
 
     def risk_meter(self, obj):
-        score = min(obj.risk_score or 0, 100)
+        score = int((obj.probability or 0) * 100)
 
         if score >= 70:
             color = "#dc3545"
@@ -82,12 +84,26 @@ class DetectionResultAdmin(admin.ModelAdmin):
 
     risk_meter.short_description = "Risk Level"
 
+    def verdict_badge(self, obj):
+        if obj.verdict == "scam":
+            color = "red"
+        elif obj.verdict == "suspicious":
+            color = "orange"
+        else:
+            color = "green"
+
+        return format_html(
+            '<b style="color:{};">{}</b>',
+            color,
+            obj.verdict.upper()
+        )
+
+    verdict_badge.short_description = "Verdict"
+
     def recalculate_detection(self, request, queryset):
         for obj in queryset:
             detect_scam(obj.internship.id)
         self.message_user(request, "Detection recalculated.")
-
-    recalculate_detection.short_description = "Recalculate selected detections"
 
 
 # =====================================================
@@ -133,21 +149,26 @@ class CompanyAdmin(admin.ModelAdmin):
         else:
             color = "red"
 
-        return format_html(
-            '<span style="color:{}; font-weight:bold;">{}</span>',
-            color,
-            score
-        )
+        return format_html('<b style="color:{};">{}</b>', color, score)
 
     reputation_display.short_description = "Reputation"
 
     def domain_health(self, obj):
-        if obj.domain_resolves and obj.has_mx_record:
+        resolves = getattr(obj, "domain_resolves", None)
+        mx = getattr(obj, "has_mx_record", None)
+
+        if resolves is None or mx is None:
+            return format_html('<span style="color:gray;">{}</span>', "Unknown")
+
+        if resolves and mx:
             return format_html(
-                '<span style="color:green;font-weight:bold;">Healthy</span>'
+                '<span style="color:green;font-weight:bold;">{}</span>',
+                "Healthy"
             )
+
         return format_html(
-            '<span style="color:red;font-weight:bold;">Risky</span>'
+            '<span style="color:red;font-weight:bold;">{}</span>',
+            "Risky"
         )
 
     domain_health.short_description = "Domain Status"
@@ -157,8 +178,6 @@ class CompanyAdmin(admin.ModelAdmin):
             if company.email_domain:
                 update_company_domain_reputation(company, company.email_domain)
         self.message_user(request, "Domain reputation refreshed.")
-
-    refresh_domain_reputation.short_description = "Refresh domain reputation"
 
 
 # =====================================================
@@ -172,7 +191,7 @@ class InternshipAdmin(admin.ModelAdmin):
         "title",
         "company_display",
         "source",
-        "risk_score_display",
+        "risk_badge",
         "report_count",
         "created_at",
     )
@@ -185,23 +204,41 @@ class InternshipAdmin(admin.ModelAdmin):
         return (
             super()
             .get_queryset(request)
-            .select_related("company", "detection")
+            .select_related("company")
+            .prefetch_related(
+                Prefetch(
+                    "detections",
+                    queryset=DetectionResult.objects.filter(is_latest=True),
+                    to_attr="latest_detection"
+                )
+            )
             .annotate(report_count_value=Count("reports"))
         )
 
     def company_display(self, obj):
-        if obj.company:
-            return obj.company.name
-        return obj.company_name_text or "—"
+        return obj.company.name if obj.company else (obj.company_name_text or "—")
 
     company_display.short_description = "Company"
 
-    def risk_score_display(self, obj):
-        if hasattr(obj, "detection"):
-            return obj.detection.risk_score
+    def risk_badge(self, obj):
+        latest_list = getattr(obj, "latest_detection", None)
+        latest = latest_list[0] if latest_list else None
+
+        if latest:
+            score = int((latest.probability or 0) * 100)
+
+            if score >= 70:
+                color = "red"
+            elif score >= 40:
+                color = "orange"
+            else:
+                color = "green"
+
+            return format_html('<b style="color:{};">{}%</b>', color, score)
+
         return "—"
 
-    risk_score_display.short_description = "Risk"
+    risk_badge.short_description = "Risk"
 
     def report_count(self, obj):
         return obj.report_count_value
@@ -212,8 +249,6 @@ class InternshipAdmin(admin.ModelAdmin):
         for internship in queryset:
             detect_scam(internship.id)
         self.message_user(request, "Detection executed.")
-
-    run_detection.short_description = "Run scam detection"
 
 
 # =====================================================
@@ -235,13 +270,7 @@ class ReportAdmin(admin.ModelAdmin):
 @admin.register(ScamRule)
 class ScamRuleAdmin(admin.ModelAdmin):
 
-    list_display = (
-        "name",
-        "weight",
-        "is_negative",
-        "active",
-    )
-
+    list_display = ("name", "weight", "is_negative", "active")
     list_filter = ("is_negative", "active")
     search_fields = ("name",)
     list_editable = ("weight", "is_negative", "active")
@@ -285,8 +314,9 @@ class RuleContributionAdmin(admin.ModelAdmin):
 
     list_display = (
         "detection",
-        "rule_name",
-        "score_added"
+        "rule",
+        "score_added",
+        "weight_snapshot"
     )
 
-    search_fields = ("rule_name",)
+    search_fields = ("rule__name",)

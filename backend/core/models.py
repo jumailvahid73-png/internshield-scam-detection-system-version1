@@ -7,7 +7,7 @@ import hashlib
 
 
 # =====================================================
-# COMPANY MODEL (STRICT 3NF + HARDENED)
+# COMPANY MODEL (HARDENED IDENTITY + DOMAIN INTELLIGENCE)
 # =====================================================
 
 class Company(models.Model):
@@ -20,11 +20,10 @@ class Company(models.Model):
 
     name = models.CharField(max_length=255)
 
+    # 🔥 STRICT identity (no NULL allowed)
     email_domain = models.CharField(
         max_length=255,
-        unique=True,
-        null=True,
-        blank=True
+        unique=True
     )
 
     website = models.URLField(blank=True, null=True)
@@ -45,6 +44,7 @@ class Company(models.Model):
     reputation_score = models.IntegerField(default=0, db_index=True)
 
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["-created_at"]
@@ -63,10 +63,18 @@ class Company(models.Model):
             models.Index(fields=["created_at"]),
         ]
 
+    def save(self, *args, **kwargs):
+        if self.email_domain:
+            self.email_domain = self.email_domain.strip().lower()
+        super().save(*args, **kwargs)
+
     def calculate_reputation(self):
         data = self.internships.aggregate(
             total=Count("id"),
-            scam=Count("id", filter=Q(detection__verdict="scam"))
+            scam=Count(
+                "id",
+                filter=Q(detections__is_latest=True, detections__verdict="scam")
+            )
         )
         total = data["total"] or 0
         scam = data["scam"] or 0
@@ -82,10 +90,15 @@ class Company(models.Model):
 
 
 # =====================================================
-# INTERNSHIP MODEL
+# INTERNSHIP MODEL (DEDUP + RAW DATA + STATUS)
 # =====================================================
 
 class Internship(models.Model):
+
+    class ProcessingStatus(models.TextChoices):
+        PENDING = "pending"
+        PROCESSED = "processed"
+        FAILED = "failed"
 
     company = models.ForeignKey(
         Company,
@@ -95,17 +108,29 @@ class Internship(models.Model):
         related_name="internships"
     )
 
-    company_name_text = models.CharField(
-        max_length=255,
-        blank=True
-    )
+    company_name_text = models.CharField(max_length=255, blank=True)
 
     title = models.CharField(max_length=255)
     description = models.TextField()
     contact_email = models.EmailField(blank=True, null=True)
+
     stipend = models.IntegerField(blank=True, null=True)
 
     source = models.CharField(max_length=255, db_index=True)
+
+    # 🔥 RAW scraped data
+    raw_data = models.JSONField(null=True, blank=True)
+
+    # 🔥 ACTIVE FLAG
+    is_active = models.BooleanField(default=True, db_index=True)
+
+    # 🔥 Processing state
+    status = models.CharField(
+        max_length=20,
+        choices=ProcessingStatus.choices,
+        default=ProcessingStatus.PENDING,
+        db_index=True
+    )
 
     fingerprint = models.CharField(
         max_length=64,
@@ -135,6 +160,8 @@ class Internship(models.Model):
             models.Index(fields=["source"]),
             models.Index(fields=["created_at"]),
             models.Index(fields=["fingerprint"]),
+            models.Index(fields=["status"]),
+            models.Index(fields=["is_active"]),
         ]
 
     def generate_fingerprint(self):
@@ -157,7 +184,7 @@ class Internship(models.Model):
 
 
 # =====================================================
-# REPORT MODEL
+# REPORT MODEL (USER FEEDBACK SIGNAL)
 # =====================================================
 
 class Report(models.Model):
@@ -203,8 +230,11 @@ class ScamRule(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     weight = models.IntegerField()
+
     is_negative = models.BooleanField(default=False)
+
     active = models.BooleanField(default=True, db_index=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -253,19 +283,20 @@ class RuleKeyword(models.Model):
 
 
 # =====================================================
-# DETECTION RESULT (VERSIONED ENGINE)
+# DETECTION RESULT (FULL HISTORY + ML SAFE)
 # =====================================================
 
 class DetectionResult(models.Model):
 
-    internship = models.OneToOneField(
+    internship = models.ForeignKey(
         Internship,
         on_delete=models.CASCADE,
-        related_name="detection",
-        db_index=True
+        related_name="detections"
     )
 
-    risk_score = models.IntegerField()
+    # 🔥 ML outputs
+    risk_score = models.FloatField()
+    probability = models.FloatField()
 
     verdict = models.CharField(
         max_length=20,
@@ -277,45 +308,44 @@ class DetectionResult(models.Model):
         db_index=True
     )
 
-    confidence = models.CharField(
-        max_length=10,
-        choices=[
-            ('low', 'Low'),
-            ('medium', 'Medium'),
-            ('high', 'High'),
-        ],
-        db_index=True
-    )
+    engine_version = models.IntegerField(db_index=True)
 
-    # 🔥 NEW — ENGINE VERSION TRACKING
-    engine_version = models.IntegerField(default=1, db_index=True)
+    # 🔥 versioning control
+    is_latest = models.BooleanField(default=True, db_index=True)
 
-    checked_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ["-checked_at"]
+        ordering = ["-created_at"]
         constraints = [
             models.CheckConstraint(
-                condition=Q(risk_score__gte=0) & Q(risk_score__lte=100),
-                name="risk_score_valid_range"
+                condition=Q(probability__gte=0) & Q(probability__lte=1),
+                name="probability_range"
             ),
         ]
         indexes = [
+            models.Index(fields=["internship", "-created_at"]),
+            models.Index(fields=["is_latest"]),
             models.Index(fields=["verdict"]),
-            models.Index(fields=["risk_score"]),
-            models.Index(
-                fields=["verdict", "-risk_score"],
-                name="verdict_risk_desc_idx"
-            ),
             models.Index(fields=["engine_version"]),
         ]
+
+    def save(self, *args, **kwargs):
+        # 🔥 ensure only one latest per internship
+        if self.is_latest:
+            DetectionResult.objects.filter(
+                internship=self.internship,
+                is_latest=True
+            ).update(is_latest=False)
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.internship.title} - {self.verdict}"
 
 
 # =====================================================
-# RULE CONTRIBUTION
+# RULE CONTRIBUTION (NORMALIZED + SNAPSHOT SAFE)
 # =====================================================
 
 class RuleContribution(models.Model):
@@ -327,11 +357,19 @@ class RuleContribution(models.Model):
         db_index=True
     )
 
-    rule_name = models.CharField(max_length=200)
-    score_added = models.IntegerField()
+    # 🔥 FIXED (normalized)
+    rule = models.ForeignKey(
+        ScamRule,
+        on_delete=models.CASCADE
+    )
+
+    # 🔥 snapshot of weight at detection time
+    weight_snapshot = models.IntegerField()
+
+    score_added = models.FloatField()
 
     class Meta:
         ordering = ["-score_added"]
 
     def __str__(self):
-        return f"{self.rule_name} ({self.score_added})"
+        return f"{self.rule.name} ({self.score_added})"

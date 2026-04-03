@@ -32,7 +32,6 @@ def check_internship(request):
             source="Public Form"
         )
 
-        # Run detection immediately
         result = detect_scam(internship.id)
 
     return render(
@@ -45,7 +44,7 @@ def check_internship(request):
 
 
 # ==========================================================
-# INTERNSHIP DETAIL (Optional Deep View)
+# INTERNSHIP DETAIL (FIXED RELATION)
 # ==========================================================
 def internship_detail(request, internship_id):
 
@@ -53,8 +52,10 @@ def internship_detail(request, internship_id):
 
     detect_scam(internship.id)
 
-    result = internship.detection
-    contributions = result.contributions.all()
+    # ✅ FIX: latest detection
+    result = internship.detections.filter(is_latest=True).first()
+
+    contributions = result.contributions.all() if result else []
 
     return render(
         request,
@@ -98,7 +99,7 @@ def report_internship(request, internship_id):
 
 
 # ==========================================================
-# ANALYTICS DASHBOARD
+# ANALYTICS DASHBOARD (FULLY FIXED)
 # ==========================================================
 def analytics_dashboard(request):
 
@@ -107,8 +108,7 @@ def analytics_dashboard(request):
     # -------------------------
     verdict_data = (
         Internship.objects
-        .select_related("detection")
-        .values("detection__verdict")
+        .values("detections__verdict")
         .annotate(count=Count("id"))
     )
 
@@ -116,8 +116,8 @@ def analytics_dashboard(request):
     verdict_counts = []
 
     for item in verdict_data:
-        if item["detection__verdict"]:
-            verdict_labels.append(item["detection__verdict"])
+        if item["detections__verdict"]:
+            verdict_labels.append(item["detections__verdict"])
             verdict_counts.append(item["count"])
 
     # -------------------------
@@ -125,14 +125,13 @@ def analytics_dashboard(request):
     # -------------------------
     risk_data = (
         Internship.objects
-        .select_related("detection")
-        .values("detection__risk_score")
+        .values("detections__risk_score")
     )
 
     risk_scores = [
-        item["detection__risk_score"]
+        item["detections__risk_score"]
         for item in risk_data
-        if item["detection__risk_score"] is not None
+        if item["detections__risk_score"] is not None
     ]
 
     # -------------------------
@@ -140,9 +139,8 @@ def analytics_dashboard(request):
     # -------------------------
     high_risk = (
         Internship.objects
-        .select_related("detection")
-        .filter(detection__risk_score__gte=70)
-        .order_by("-detection__risk_score")[:5]
+        .filter(detections__risk_score__gte=70, detections__is_latest=True)
+        .order_by("-detections__risk_score")[:5]
     )
 
     # -------------------------
@@ -150,7 +148,7 @@ def analytics_dashboard(request):
     # -------------------------
     top_rules = (
         RuleContribution.objects
-        .values("rule_name")
+        .values("rule__name")
         .annotate(count=Count("id"))
         .order_by("-count")[:5]
     )

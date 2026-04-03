@@ -1,75 +1,118 @@
-import random
 from django.core.management.base import BaseCommand
-from core.models import Company, Internship
-from core.detector import detect_scam
+from django.contrib.auth.models import User
+from core.models import (
+    Company, Internship, DetectionResult,
+    ScamRule, RuleKeyword, RuleContribution, Report
+)
+import random
 
 
 class Command(BaseCommand):
-    help = "Seed large internship dataset"
+    help = "Seed realistic scam detection data"
 
     def handle(self, *args, **kwargs):
 
-        print("Seeding data...")
+        # Create user
+        user, _ = User.objects.get_or_create(username="admin")
 
+        # -------------------------
+        # REALISTIC RULES
+        # -------------------------
+        rules_data = [
+            ("Payment Request", "Internship asks for upfront payment", 10, ["payment", "fees", "deposit"]),
+            ("Fake Domain", "Email domain doesn't match company", 9, ["gmail.com", "yahoo.com"]),
+            ("High Salary", "Unrealistic stipend offered", 6, ["10000$", "instant payout"]),
+            ("No Website", "Company has no valid website", 7, ["no website"]),
+            ("Generic Description", "Copied or vague description", 5, ["easy job", "quick money"]),
+        ]
+
+        rules = []
+
+        for name, desc, weight, keywords in rules_data:
+            rule = ScamRule.objects.create(
+                name=name,
+                description=desc,
+                weight=weight,
+                active=True
+            )
+            rules.append(rule)
+
+            for kw in keywords:
+                RuleKeyword.objects.create(
+                    rule=rule,
+                    keyword=kw,
+                    field="description"
+                )
+
+        # -------------------------
+        # COMPANIES
+        # -------------------------
         companies = []
-        domains = ["techcorp.com", "innovatex.io", "futurelabs.ai", "hirequick.xyz"]
-
-        # Create companies
-        for i in range(10):
-            company, _ = Company.objects.get_or_create(
-                name=f"Company {i}",
-                defaults={
-                    "website": f"https://company{i}.com",
-                    "email_domain": random.choice(domains),
-                    "verified_status": random.choice(
-                        ["verified", "unverified", "unverified", "blacklisted"]
-                    )
-                }
+        for i in range(15):
+            c = Company.objects.create(
+                name=f"TechCorp {i}",
+                email_domain=f"tech{i}.com",
+                verified_status=random.choice(["verified", "unverified"]),
+                reputation_score=random.randint(-5, 15)
             )
-            companies.append(company)
+            companies.append(c)
 
-        scam_descriptions = [
-            "Pay registration fee to confirm your internship seat. Limited seats available. Apply fast.",
-            "No interview required. Instant selection. Deposit processing charge.",
-            "Urgent hiring! Send money for training kit."
-        ]
+        # -------------------------
+        # INTERNSHIPS + DETECTIONS
+        # -------------------------
+        for i in range(100):
 
-        genuine_descriptions = [
-            "We are looking for a backend developer intern to work on Django APIs and PostgreSQL.",
-            "Frontend internship opportunity working with React and UI design systems.",
-            "AI research internship focusing on machine learning model optimization."
-        ]
-
-        titles = [
-            "Backend Developer Intern",
-            "Frontend Internship",
-            "AI Work From Home Internship",
-            "Data Science Program",
-            "Online Job Opportunity"
-        ]
-
-        for i in range(300):
-
-            is_scam = random.choice([True, False, False])  # 1/3 scams
-
-            description = random.choice(
-                scam_descriptions if is_scam else genuine_descriptions
-            )
+            company = random.choice(companies)
 
             internship = Internship.objects.create(
-                company=random.choice(companies) if random.random() > 0.2 else None,
-                company_name_text=None,
-                title=random.choice(titles),
-                description=description,
-                stipend=random.randint(0, 50000),
-                contact_email=random.choice([
-                    "hr@techcorp.com",
-                    "jobs@gmail.com",
-                    "contact@futurelabs.ai"
+                company=company,
+                title=f"ML Intern {i}",
+                description=random.choice([
+                    "Work on AI models",
+                    "Easy job earn money fast payment required",
+                    "High paying internship no experience needed",
+                    "Serious ML internship with training"
                 ]),
-                source=random.choice(["LinkedIn", "Indeed", "Telegram", "Unknown"])
+                source=random.choice(["linkedin", "internshala"]),
+                status="processed",
+                is_active=True
             )
 
-            detect_scam(internship.id)
+            prob = random.random()
 
-        print("DONE. 300 internships created.")
+            verdict = (
+                "scam" if prob > 0.7 else
+                "suspicious" if prob > 0.4 else
+                "genuine"
+            )
+
+            detection = DetectionResult.objects.create(
+                internship=internship,
+                probability=prob,
+                risk_score=prob,
+                verdict=verdict,
+                engine_version=1,
+                is_latest=True
+            )
+
+            # Rule contributions
+            selected_rules = random.sample(rules, random.randint(1, 3))
+
+            for rule in selected_rules:
+                RuleContribution.objects.create(
+                    detection=detection,
+                    rule=rule,
+                    score_added=random.uniform(0.1, 1.0),
+                    weight_snapshot=rule.weight
+                )
+
+            # Reports (some internships only)
+            if prob > 0.5:
+                Report.objects.create(
+                    internship=internship,
+                    user=user,
+                    reason="Suspicious listing",
+                    details="Looks like scam"
+                )
+
+        self.stdout.write(self.style.SUCCESS("✅ Realistic data seeded"))
