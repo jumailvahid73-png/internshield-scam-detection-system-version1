@@ -210,7 +210,7 @@ This ensures:
 
 ## 👨‍💻 Author
 
-**Muhammed Farhan**
+**Jmail Vahid**
 B.Tech CSE (AI & ML)
 MEA Engineering College
 
