@@ -74,6 +74,25 @@ document.addEventListener('DOMContentLoaded', () => {
     counters.forEach(c => counterIO.observe(c));
   }
 
+  /* ---------- Product category filter tabs ---------- */
+  document.querySelectorAll('.filter-tabs').forEach(tabGroup => {
+    const grid = document.querySelector(tabGroup.dataset.target);
+    if (!grid) return;
+    const cards = grid.querySelectorAll('.product-card');
+    tabGroup.addEventListener('click', (e) => {
+      const tab = e.target.closest('.filter-tab');
+      if (!tab) return;
+      tabGroup.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const category = tab.dataset.category;
+      cards.forEach(card => {
+        const show = category === 'all' || card.dataset.category === category;
+        card.classList.toggle('filtered-out', !show);
+        if (show) card.classList.add('in-view');
+      });
+    });
+  });
+
   /* ---------- Back to top ---------- */
   const backTop = document.querySelector('.back-top');
   if (backTop) {
