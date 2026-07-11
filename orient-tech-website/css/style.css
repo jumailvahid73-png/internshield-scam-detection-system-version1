@@ -354,8 +354,9 @@ section { position: relative; }
 }
 .scroll-cue .line { width: 1px; height: 34px; background: rgba(255,255,255,0.4); position: relative; overflow: hidden; }
 .hero-wave { position: absolute; left: 0; right: 0; bottom: -1px; z-index: 3; line-height: 0; }
-.hero-wave svg { width: 100%; height: 70px; display: block; }
-.hero-wave path { fill: var(--color-bg); }
+.hero-wave svg { width: 100%; height: 92px; display: block; }
+.hero-wave .roof-back { fill: var(--color-bg-alt); }
+.hero-wave .roof-front { fill: var(--color-bg); }
 .scroll-cue .line::after {
   content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
   background: #fff; animation: scrollLine 2s ease-in-out infinite;
