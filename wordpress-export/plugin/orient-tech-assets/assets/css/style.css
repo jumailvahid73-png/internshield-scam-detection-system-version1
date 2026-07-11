@@ -274,10 +274,12 @@ section { position: relative; }
   .main-nav li.active a.nav-link { border-color: var(--color-accent); }
 
   .mobile-nav-foot {
-    display: flex; flex-direction: column; gap: 16px;
+    display: flex; flex-direction: column; gap: 12px;
     padding: 20px 24px 28px; border-top: 1px solid rgba(255,255,255,0.12);
   }
-  .mobile-nav-contact { display: flex; flex-direction: column; gap: 10px; }
+  .mobile-nav-foot .btn-outline { color: #fff; border-color: rgba(255,255,255,0.35); }
+  .mobile-nav-foot .btn-outline:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.5); color: #fff; }
+  .mobile-nav-contact { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
   .mobile-nav-contact a { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.8); font-size: .92rem; font-weight: 500; }
   .mobile-nav-contact a i { color: var(--color-accent-light); font-size: 1.05rem; }
 }
