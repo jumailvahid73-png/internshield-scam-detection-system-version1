@@ -353,10 +353,6 @@ section { position: relative; }
   color: rgba(255,255,255,0.75); font-size: .75rem; letter-spacing: .12em; text-transform: uppercase;
 }
 .scroll-cue .line { width: 1px; height: 34px; background: rgba(255,255,255,0.4); position: relative; overflow: hidden; }
-.hero-wave { position: absolute; left: 0; right: 0; bottom: -1px; z-index: 3; line-height: 0; }
-.hero-wave svg { width: 100%; height: 92px; display: block; }
-.hero-wave .roof-back { fill: var(--color-bg-alt); }
-.hero-wave .roof-front { fill: var(--color-bg); }
 .scroll-cue .line::after {
   content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
   background: #fff; animation: scrollLine 2s ease-in-out infinite;
@@ -382,7 +378,7 @@ section { position: relative; }
   filter: blur(20px);
   top: -180px; right: -60px;
 }
-.page-hero .container { position: relative; z-index: 1; }
+.page-hero .container { position: relative; z-index: 2; }
 .page-hero .eyebrow { background: rgba(255,255,255,0.12); color: #ffd7ab; }
 .page-hero h1 { color: #fff; font-size: clamp(2rem, 4.4vw, 3rem); margin-bottom: 14px; }
 .page-hero p { color: rgba(255,255,255,0.8); font-size: 1.05rem; max-width: 640px; }
