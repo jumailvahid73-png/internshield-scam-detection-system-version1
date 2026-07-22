@@ -11,21 +11,42 @@ window.CSConfigurator = (function () {
   }
 
   const scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x12140f, 0.05);
+
   const camera = new THREE.PerspectiveCamera(38, mount.clientWidth / mount.clientHeight, 0.1, 100);
   camera.position.set(4.4, 2.4, 5.6);
   camera.lookAt(0, 0, 0);
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(mount.clientWidth, mount.clientHeight);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  if ('outputEncoding' in renderer) renderer.outputEncoding = THREE.sRGBEncoding;
+  if ('toneMapping' in renderer) { renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.1; }
   mount.appendChild(renderer.domElement);
 
-  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-  const key = new THREE.DirectionalLight(0xffe4c4, 1.15);
+  scene.add(new THREE.HemisphereLight(0xfff1dc, 0x0d0f0a, 0.6));
+  const key = new THREE.DirectionalLight(0xffe4c4, 1.3);
   key.position.set(6, 9, 5);
+  key.castShadow = true;
+  key.shadow.mapSize.set(1024, 1024);
+  key.shadow.camera.left = -5; key.shadow.camera.right = 5;
+  key.shadow.camera.top = 5; key.shadow.camera.bottom = -5;
+  key.shadow.camera.near = 1; key.shadow.camera.far = 20;
+  key.shadow.bias = -0.003;
+  key.shadow.radius = 3;
   scene.add(key);
-  const rim = new THREE.DirectionalLight(0x4fae7a, 0.5);
+  const rim = new THREE.DirectionalLight(0x4fae7a, 0.45);
   rim.position.set(-6, 2, -5);
   scene.add(rim);
+  const fillLight = new THREE.DirectionalLight(0xbcd4ff, 0.2);
+  fillLight.position.set(-2, 1.5, 4);
+  scene.add(fillLight);
+
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), new THREE.ShadowMaterial({ opacity: 0.45 }));
+  ground.rotation.x = -Math.PI / 2;
+  ground.receiveShadow = true;
+  scene.add(ground);
 
   const group = new THREE.Group();
   scene.add(group);
@@ -40,39 +61,64 @@ window.CSConfigurator = (function () {
     orange: 0xf26825, green: 0x13733a, slate: 0x3a4048, sandstone: 0xd8c7a1, blue: 0x1f4e8c, red: 0xb3261e
   };
 
-  let bodyMesh = null, ridgeGroup = null, addonGroup = null;
+  function addCornerCastings(mesh, L, H, D) {
+    const castMat = new THREE.MeshStandardMaterial({ color: 0x15140f, roughness: 0.35, metalness: 0.75 });
+    const castGeo = new THREE.BoxGeometry(0.14, 0.14, 0.14);
+    [-1, 1].forEach(sx => [-1, 1].forEach(sy => [-1, 1].forEach(sz => {
+      const c = new THREE.Mesh(castGeo, castMat);
+      c.position.set(sx * (L / 2 - 0.02), sy * (H / 2 - 0.02), sz * (D / 2 - 0.02));
+      c.castShadow = true;
+      mesh.add(c);
+    })));
+  }
+
+  function addCorrugation(mesh, L, H, D, colorHex) {
+    const ridgeCount = Math.max(6, Math.round(L * 3.4));
+    const light = new THREE.Color(colorHex).multiplyScalar(1.14);
+    const dark = new THREE.Color(colorHex).multiplyScalar(0.82);
+    [1, -1].forEach(faceSign => {
+      for (let r = 0; r < ridgeCount; r++) {
+        const protrude = r % 2 === 0 ? 0.016 : -0.011;
+        const ridgeMat = new THREE.MeshStandardMaterial({ color: r % 2 === 0 ? light : dark, roughness: 0.46, metalness: 0.58 });
+        const ridgeGeo = new THREE.BoxGeometry(L / ridgeCount + 0.008, H * 0.9, 0.028);
+        const ridge = new THREE.Mesh(ridgeGeo, ridgeMat);
+        ridge.position.set(-L / 2 + (r + 0.5) * (L / ridgeCount), 0, faceSign * (D / 2 + protrude));
+        ridge.castShadow = true;
+        mesh.add(ridge);
+      }
+    });
+  }
+
+  let bodyMesh = null, addonGroup = null;
 
   function buildBody(size, color) {
-    if (bodyMesh) { group.remove(bodyMesh); }
-    if (ridgeGroup) { group.remove(ridgeGroup); }
+    if (bodyMesh) group.remove(bodyMesh);
     const { length, height, depth } = SIZES[size];
+    const colorHex = COLORS[color];
 
     const geo = new THREE.BoxGeometry(length, height, depth);
-    const mat = new THREE.MeshStandardMaterial({ color: COLORS[color], roughness: 0.5, metalness: 0.4 });
+    const mat = new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.42, metalness: 0.56 });
     bodyMesh = new THREE.Mesh(geo, mat);
+    bodyMesh.castShadow = true;
+    bodyMesh.receiveShadow = true;
     group.add(bodyMesh);
 
     const edges = new THREE.EdgesGeometry(geo);
     const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x0a0b08, transparent: true, opacity: 0.5 }));
     bodyMesh.add(line);
 
-    ridgeGroup = new THREE.Group();
-    const ridgeCount = Math.max(4, Math.floor(length * 6));
-    for (let r = 1; r < ridgeCount; r++) {
-      const ridgeGeo = new THREE.BoxGeometry(0.025, height * 0.92, depth + 0.01);
-      const ridgeMat = new THREE.MeshStandardMaterial({ color: COLORS[color], roughness: 0.6, metalness: 0.3, transparent: true, opacity: 0.35 });
-      const ridge = new THREE.Mesh(ridgeGeo, ridgeMat);
-      ridge.position.x = -length / 2 + (r * length) / ridgeCount;
-      ridgeGroup.add(ridge);
-    }
-    group.add(ridgeGroup);
+    addCorrugation(bodyMesh, length, height, depth, colorHex);
+    addCornerCastings(bodyMesh, length, height, depth);
 
-    // door lines (end face)
-    const doorGeo = new THREE.BoxGeometry(0.02, height * 0.86, depth * 0.9);
-    const doorMat = new THREE.MeshStandardMaterial({ color: 0x14170f, roughness: 0.6 });
+    // door end detail
+    const doorGeo = new THREE.PlaneGeometry(depth * 0.86, height * 0.82);
+    const doorMat = new THREE.MeshStandardMaterial({ color: 0x0d0f0a, roughness: 0.55, metalness: 0.4, side: THREE.DoubleSide });
     const door = new THREE.Mesh(doorGeo, doorMat);
-    door.position.x = length / 2 + 0.01;
+    door.rotation.y = Math.PI / 2;
+    door.position.set(length / 2 + 0.006, 0, 0);
     bodyMesh.add(door);
+
+    ground.position.y = -height / 2 - 0.015;
 
     return { length, height, depth };
   }
@@ -88,7 +134,7 @@ window.CSConfigurator = (function () {
     for (let i = 0; i < 2; i++) {
       const geo = new THREE.PlaneGeometry(dims.length * 0.16, dims.height * 0.32);
       const win = new THREE.Mesh(geo, winMat);
-      win.position.set(-dims.length * 0.22 + i * dims.length * 0.3, 0.05, dims.depth / 2 + 0.005);
+      win.position.set(-dims.length * 0.22 + i * dims.length * 0.3, 0.05, dims.depth / 2 + 0.035);
       addonGroup.add(win);
     }
   }
@@ -97,6 +143,7 @@ window.CSConfigurator = (function () {
     const geo = new THREE.BoxGeometry(dims.length * 0.16, dims.height * 0.14, dims.depth * 0.5);
     const mat = new THREE.MeshStandardMaterial({ color: 0xe9ecef, roughness: 0.4, metalness: 0.5 });
     const ac = new THREE.Mesh(geo, mat);
+    ac.castShadow = true;
     ac.position.set(dims.length * 0.32, dims.height / 2 + dims.height * 0.07, 0);
     addonGroup.add(ac);
   }
@@ -106,6 +153,7 @@ window.CSConfigurator = (function () {
     for (let i = 0; i < 4; i++) {
       const geo = new THREE.BoxGeometry(0.26, 0.05, dims.depth * 0.5);
       const step = new THREE.Mesh(geo, stepMat);
+      step.castShadow = true;
       step.position.set(-dims.length / 2 - 0.15 - i * 0.24, -dims.height / 2 + 0.05 + i * 0.11, 0);
       addonGroup.add(step);
     }
@@ -115,6 +163,7 @@ window.CSConfigurator = (function () {
     const geo = new THREE.BoxGeometry(dims.length * 0.7, 0.04, dims.depth * 0.7);
     const mat = new THREE.MeshStandardMaterial({ color: 0x1a2b4a, roughness: 0.25, metalness: 0.6 });
     const panel = new THREE.Mesh(geo, mat);
+    panel.castShadow = true;
     panel.position.set(0, dims.height / 2 + 0.03, 0);
     addonGroup.add(panel);
   }
