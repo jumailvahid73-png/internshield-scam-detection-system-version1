@@ -153,15 +153,29 @@
   }
   window.addEventListener('resize', onResize);
 
+  // Scroll-driven cinematic camera move: dolly in, crane up, containers rotate
+  // away and settle as the hero scrolls out of view.
+  let scrollT = 0, targetScrollT = 0;
+  window.addEventListener('cs:heroscroll', (e) => { targetScrollT = e.detail.progress; }, { passive: true });
+
+  const baseCamZ = camera.position.z, baseCamY = camera.position.y;
+  const baseGroupY = group.position.y;
+
   const clock = new THREE.Clock();
   function animate() {
     requestAnimationFrame(animate);
     const t = clock.getElapsedTime();
 
+    scrollT += (targetScrollT - scrollT) * 0.08;
+
     curRotY += (targetRotY - curRotY) * 0.03;
     curRotX += (targetRotX - curRotX) * 0.03;
-    group.rotation.y = curRotY + Math.sin(t * 0.06) * 0.04;
+    group.rotation.y = curRotY + Math.sin(t * 0.06) * 0.04 + scrollT * 0.75;
     group.rotation.x = curRotX;
+    group.position.y = baseGroupY - scrollT * 1.4;
+
+    camera.position.z = baseCamZ - scrollT * 4.5;
+    camera.position.y = baseCamY + scrollT * 1.7;
 
     meshes.forEach(m => {
       m.mesh.position.y = m.base[1] + Math.sin(t * m.speed + m.offset) * 0.18;

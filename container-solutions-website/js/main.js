@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ---------- Hero depth: industrial grid overlay + parallax ---------- */
+  /* ---------- Hero depth: industrial grid overlay + mouse & scroll parallax ---------- */
   const heroSection = document.querySelector('.hero, .page-hero');
   if (heroSection) {
     if (!heroSection.querySelector('.hero-grid')) {
@@ -188,20 +188,49 @@ document.addEventListener('DOMContentLoaded', () => {
       grid.setAttribute('aria-hidden', 'true');
       heroSection.prepend(grid);
     }
+    const grid = heroSection.querySelector('.hero-grid');
+    const heroContent = heroSection.querySelector('.hero-content');
+    const heroCanvas = heroSection.querySelector('.hero-canvas');
+    const heroFallback = heroSection.querySelector('.hero-fallback-bg');
+    const isMainHero = heroSection.classList.contains('hero');
+
+    let mx = 0, my = 0, scrollT = 0;
+
+    function renderHero() {
+      const bgY = scrollT * 60;
+      const bgScale = 1 + scrollT * 0.08;
+      if (grid) grid.style.transform = `translate3d(${mx * 24}px, ${my * 24 + bgY * 0.6}px, 0)`;
+      if (heroCanvas) { heroCanvas.style.transform = `translate3d(0, ${bgY}px, 0) scale(${bgScale})`; heroCanvas.style.opacity = String(1 - scrollT * 0.6); }
+      if (heroFallback) heroFallback.style.transform = `translate3d(0, ${bgY}px, 0) scale(${bgScale})`;
+      if (heroContent) {
+        const contentX = mx * -10;
+        const contentY = my * -10 - scrollT * 90;
+        const contentScale = 1 - scrollT * 0.08;
+        heroContent.style.transform = `translate3d(${contentX}px, ${contentY}px, 0) scale(${contentScale})`;
+        heroContent.style.opacity = String(Math.max(0, 1 - scrollT * 1.6));
+      }
+      window.dispatchEvent(new CustomEvent('cs:heroscroll', { detail: { progress: scrollT } }));
+    }
+
+    if (isMainHero) {
+      const updateScroll = () => {
+        const h = heroSection.offsetHeight || window.innerHeight;
+        scrollT = Math.min(Math.max(window.scrollY / h, 0), 1);
+        renderHero();
+      };
+      updateScroll();
+      window.addEventListener('scroll', updateScroll, { passive: true });
+      window.addEventListener('resize', updateScroll);
+    }
+
     if (canHover && !reducedMotion) {
-      const grid = heroSection.querySelector('.hero-grid');
-      const heroContent = heroSection.querySelector('.hero-content');
       heroSection.addEventListener('mousemove', (e) => {
         const rect = heroSection.getBoundingClientRect();
-        const px = (e.clientX - rect.left) / rect.width - 0.5;
-        const py = (e.clientY - rect.top) / rect.height - 0.5;
-        if (grid) grid.style.transform = `translate3d(${px * 24}px, ${py * 24}px, 0)`;
-        if (heroContent) heroContent.style.transform = `translate3d(${px * -10}px, ${py * -10}px, 0)`;
+        mx = (e.clientX - rect.left) / rect.width - 0.5;
+        my = (e.clientY - rect.top) / rect.height - 0.5;
+        renderHero();
       });
-      heroSection.addEventListener('mouseleave', () => {
-        if (grid) grid.style.transform = '';
-        if (heroContent) heroContent.style.transform = '';
-      });
+      heroSection.addEventListener('mouseleave', () => { mx = 0; my = 0; renderHero(); });
     }
   }
 
