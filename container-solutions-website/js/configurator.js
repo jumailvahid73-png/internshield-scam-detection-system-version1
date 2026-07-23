@@ -178,6 +178,8 @@ window.CSConfigurator = (function () {
 
   const ADDON_BUILDERS = { windows: addWindows, ac: addAC, staircase: addStaircase, solar: addSolar, stripe: addStripe };
 
+  const camDir = new THREE.Vector3(4.4, 2.4, 5.6).normalize();
+
   function update(state) {
     const size = SIZES[state.size] ? state.size : '20ft';
     const color = COLORS[state.color] ? state.color : 'orange';
@@ -186,6 +188,12 @@ window.CSConfigurator = (function () {
     (state.addons || []).forEach(key => {
       if (ADDON_BUILDERS[key]) ADDON_BUILDERS[key](dims, color);
     });
+
+    // Keep the container comfortably framed regardless of its size: a 10ft
+    // and a 40ft box would otherwise look tiny or clipped at a fixed distance.
+    const dist = Math.max(5.6, dims.length * 1.15 + 2.7);
+    camera.position.copy(camDir).multiplyScalar(dist);
+    camera.lookAt(0, -dims.height * 0.05, 0);
   }
 
   function onResize() {

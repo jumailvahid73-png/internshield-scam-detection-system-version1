@@ -25,7 +25,6 @@
           <img src="assets/img/brand/logo-icon.png" alt="Container Solutions logo" class="brand-logo">
           <span class="brand-word">Container<span> Solutions</span></span>
         </a>
-        <button class="nav-close" aria-label="Close menu"><i class="bi bi-x-lg"></i></button>
       </div>
       <ul>
         <li><a class="nav-link" href="index.html"><i class="bi bi-house-door-fill nav-link-icon"></i>Home</a></li>
@@ -51,6 +50,7 @@
 </header>
 
 <section class="page-hero">
+  <div class="page-hero-bg" style="background-image:linear-gradient(160deg, rgba(10,11,8,0.82), rgba(10,11,8,0.6) 55%, rgba(10,11,8,0.93) 100%), url('assets/img/site/partner-with-us.jpg')"></div>
   <div class="container">
     <div class="eyebrow reveal in-view"><i class="bi bi-headset"></i> Contact Us</div>
     <h1 class="reveal in-view stagger-1">Get in Touch with Us</h1>
@@ -117,14 +117,23 @@
         <div class="eyebrow"><i class="bi bi-map"></i> Find Us</div>
         <h2 style="margin-bottom:20px">Our Global Locations</h2>
         <p style="color:var(--color-text-muted);margin-bottom:10px">From our Dubai headquarters to depots and offices across Oman, India, the USA and Saudi Arabia.</p>
-        <div class="map-embed reveal" data-offices='[
-          {"name":"Dubai Office (HQ)","address":"Jebel Ali Industrial Area, Dubai, UAE","phone":"+971 4 880 2998","lat":24.9857,"lng":55.0273},
-          {"name":"Oman Office","address":"Plot 305, Sohar Free Zone, Sohar, Oman","phone":"+968 2694 2610","lat":24.3643,"lng":56.7478},
-          {"name":"India Office","address":"Mundra, Gujarat 370405, India","phone":"+91 88288 70007","lat":22.8394,"lng":69.7220},
-          {"name":"USA Office","address":"7223 Decker Dr., Houston, TX, USA","phone":"+1 (765) 427-6391","lat":29.7604,"lng":-95.3698},
-          {"name":"KSA Office","address":"Ibn Sina, Al Khobar 31952, Saudi Arabia","phone":"+966 50 894 144","lat":26.2172,"lng":50.1971}
-        ]'>
-          <iframe src="https://www.google.com/maps?q=Container+Solutions+Jebel+Ali+Dubai&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Container Solutions locations"></iframe>
+        <div class="locations-panel reveal">
+          <div class="map-embed" data-offices='[
+            {"name":"Dubai Office (HQ)","address":"Jebel Ali Industrial Area, Dubai, UAE","phone":"+971 4 880 2998","lat":24.9857,"lng":55.0273},
+            {"name":"Oman Office","address":"Plot 305, Sohar Free Zone, Sohar, Oman","phone":"+968 2694 2610","lat":24.3643,"lng":56.7478},
+            {"name":"India Office","address":"Mundra, Gujarat 370405, India","phone":"+91 88288 70007","lat":22.8394,"lng":69.7220},
+            {"name":"USA Office","address":"7223 Decker Dr., Houston, TX, USA","phone":"+1 (765) 427-6391","lat":29.7604,"lng":-95.3698},
+            {"name":"KSA Office","address":"Ibn Sina, Al Khobar 31952, Saudi Arabia","phone":"+966 50 894 144","lat":26.2172,"lng":50.1971}
+          ]'>
+            <iframe src="https://www.google.com/maps?q=Container+Solutions+Jebel+Ali+Dubai&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Container Solutions locations"></iframe>
+          </div>
+          <div class="locations-list">
+            <span class="location-chip"><span class="dot"></span>Dubai, UAE<em>HQ</em></span>
+            <span class="location-chip"><span class="dot"></span>Sohar, Oman</span>
+            <span class="location-chip"><span class="dot"></span>Mundra, India</span>
+            <span class="location-chip"><span class="dot"></span>Houston, USA</span>
+            <span class="location-chip"><span class="dot"></span>Al Khobar, KSA</span>
+          </div>
         </div>
       </div>
 

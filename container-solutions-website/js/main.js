@@ -13,10 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------- Mobile nav toggle ---------- */
   const navToggle = document.querySelector('.nav-toggle');
-  const navClose = document.querySelector('.nav-close');
   const body = document.body;
   if (navToggle) navToggle.addEventListener('click', () => body.classList.toggle('nav-open'));
-  if (navClose) navClose.addEventListener('click', () => body.classList.remove('nav-open'));
   document.querySelectorAll('.main-nav a.nav-link').forEach(link => {
     link.addEventListener('click', () => body.classList.remove('nav-open'));
   });
