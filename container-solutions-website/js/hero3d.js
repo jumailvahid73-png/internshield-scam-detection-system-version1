@@ -60,7 +60,9 @@
     [-1, 1].forEach(sx => [-1, 1].forEach(sy => [-1, 1].forEach(sz => {
       const c = new THREE.Mesh(castGeo, castMat);
       c.position.set(sx * (L / 2 - 0.02), sy * (H / 2 - 0.02), sz * (D / 2 - 0.02));
-      c.castShadow = true;
+      // No castShadow here: this runs 8x per container and the shadow map
+      // would re-render for every casting with no visible gain. Only the
+      // main container mesh needs to cast a shadow onto the ground.
       mesh.add(c);
     })));
   }
@@ -76,7 +78,6 @@
         const ridgeGeo = new THREE.BoxGeometry(L / ridgeCount + 0.01, H * 0.9, 0.03);
         const ridge = new THREE.Mesh(ridgeGeo, ridgeMat);
         ridge.position.set(-L / 2 + (r + 0.5) * (L / ridgeCount), 0, faceSign * (D / 2 + protrude));
-        ridge.castShadow = true;
         mesh.add(ridge);
       }
     });

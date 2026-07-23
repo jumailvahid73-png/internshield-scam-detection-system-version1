@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
       window.dispatchEvent(new CustomEvent('cs:heroscroll', { detail: { progress: scrollT } }));
     }
 
-    if (isMainHero) {
+    if (isMainHero && !reducedMotion) {
       const updateScroll = () => {
         const h = heroSection.offsetHeight || window.innerHeight;
         scrollT = Math.min(Math.max(window.scrollY / h, 0), 1);

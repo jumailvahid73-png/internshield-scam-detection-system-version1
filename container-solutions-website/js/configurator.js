@@ -67,7 +67,8 @@ window.CSConfigurator = (function () {
     [-1, 1].forEach(sx => [-1, 1].forEach(sy => [-1, 1].forEach(sz => {
       const c = new THREE.Mesh(castGeo, castMat);
       c.position.set(sx * (L / 2 - 0.02), sy * (H / 2 - 0.02), sz * (D / 2 - 0.02));
-      c.castShadow = true;
+      // No castShadow: 8 per rebuild, shadow map cost with no visible gain.
+      // Only the main container mesh casts onto the ground.
       mesh.add(c);
     })));
   }
@@ -83,7 +84,6 @@ window.CSConfigurator = (function () {
         const ridgeGeo = new THREE.BoxGeometry(L / ridgeCount + 0.008, H * 0.9, 0.028);
         const ridge = new THREE.Mesh(ridgeGeo, ridgeMat);
         ridge.position.set(-L / 2 + (r + 0.5) * (L / ridgeCount), 0, faceSign * (D / 2 + protrude));
-        ridge.castShadow = true;
         mesh.add(ridge);
       }
     });
@@ -143,7 +143,6 @@ window.CSConfigurator = (function () {
     const geo = new THREE.BoxGeometry(dims.length * 0.16, dims.height * 0.14, dims.depth * 0.5);
     const mat = new THREE.MeshStandardMaterial({ color: 0xe9ecef, roughness: 0.4, metalness: 0.5 });
     const ac = new THREE.Mesh(geo, mat);
-    ac.castShadow = true;
     ac.position.set(dims.length * 0.32, dims.height / 2 + dims.height * 0.07, 0);
     addonGroup.add(ac);
   }
@@ -153,7 +152,6 @@ window.CSConfigurator = (function () {
     for (let i = 0; i < 4; i++) {
       const geo = new THREE.BoxGeometry(0.26, 0.05, dims.depth * 0.5);
       const step = new THREE.Mesh(geo, stepMat);
-      step.castShadow = true;
       step.position.set(-dims.length / 2 - 0.15 - i * 0.24, -dims.height / 2 + 0.05 + i * 0.11, 0);
       addonGroup.add(step);
     }
@@ -163,7 +161,6 @@ window.CSConfigurator = (function () {
     const geo = new THREE.BoxGeometry(dims.length * 0.7, 0.04, dims.depth * 0.7);
     const mat = new THREE.MeshStandardMaterial({ color: 0x1a2b4a, roughness: 0.25, metalness: 0.6 });
     const panel = new THREE.Mesh(geo, mat);
-    panel.castShadow = true;
     panel.position.set(0, dims.height / 2 + 0.03, 0);
     addonGroup.add(panel);
   }
@@ -205,13 +202,38 @@ window.CSConfigurator = (function () {
   }
   window.addEventListener('resize', onResize);
 
+  // Auto-rotate until the user takes the wheel, then drag to rotate manually
+  // (Pointer Events cover mouse, touch and pen with the same handlers).
   let autoRotate = true;
-  mount.addEventListener('pointerdown', () => { autoRotate = false; });
+  let isDragging = false;
+  let lastX = 0;
+  let manualRotationY = 0.3;
+
+  mount.style.touchAction = 'none';
+  mount.addEventListener('pointerdown', (e) => {
+    autoRotate = false;
+    isDragging = true;
+    lastX = e.clientX;
+    mount.setPointerCapture(e.pointerId);
+    mount.style.cursor = 'grabbing';
+  });
+  mount.addEventListener('pointermove', (e) => {
+    if (!isDragging) return;
+    const dx = e.clientX - lastX;
+    lastX = e.clientX;
+    manualRotationY += dx * 0.012;
+    group.rotation.y = manualRotationY;
+  });
+  const endDrag = () => { isDragging = false; mount.style.cursor = 'grab'; };
+  mount.addEventListener('pointerup', endDrag);
+  mount.addEventListener('pointercancel', endDrag);
 
   const clock = new THREE.Clock();
   function animate() {
     requestAnimationFrame(animate);
-    if (autoRotate) group.rotation.y = Math.sin(clock.getElapsedTime() * 0.15) * 0.5 + 0.3;
+    if (autoRotate) {
+      group.rotation.y = Math.sin(clock.getElapsedTime() * 0.15) * 0.5 + 0.3;
+    }
     renderer.render(scene, camera);
   }
   animate();
