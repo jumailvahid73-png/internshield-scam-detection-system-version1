@@ -177,20 +177,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ---------- Hero depth: industrial grid overlay + mouse & scroll parallax ---------- */
+  /* ---------- Hero depth: mouse & scroll parallax (grid overlay is home-hero only) ---------- */
   const heroSection = document.querySelector('.hero, .page-hero');
   if (heroSection) {
-    if (!heroSection.querySelector('.hero-grid')) {
-      const grid = document.createElement('div');
-      grid.className = 'hero-grid';
-      grid.setAttribute('aria-hidden', 'true');
-      heroSection.prepend(grid);
+    const isMainHero = heroSection.classList.contains('hero');
+    let grid = null;
+    if (isMainHero) {
+      grid = heroSection.querySelector('.hero-grid');
+      if (!grid) {
+        grid = document.createElement('div');
+        grid.className = 'hero-grid';
+        grid.setAttribute('aria-hidden', 'true');
+        heroSection.prepend(grid);
+      }
     }
-    const grid = heroSection.querySelector('.hero-grid');
     const heroContent = heroSection.querySelector('.hero-content');
     const heroCanvas = heroSection.querySelector('.hero-canvas');
     const heroFallback = heroSection.querySelector('.hero-fallback-bg');
-    const isMainHero = heroSection.classList.contains('hero');
 
     let mx = 0, my = 0, scrollT = 0;
 
