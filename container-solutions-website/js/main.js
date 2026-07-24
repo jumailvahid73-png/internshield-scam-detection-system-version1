@@ -142,20 +142,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---------- Ambient cursor glow ---------- */
-  if (canHover && !reducedMotion) {
-    const glow = document.createElement('div');
-    glow.className = 'cursor-glow';
-    glow.setAttribute('aria-hidden', 'true');
-    document.body.appendChild(glow);
-    let glowActive = false;
-    window.addEventListener('mousemove', (e) => {
-      glow.style.transform = `translate(${e.clientX - 220}px, ${e.clientY - 220}px)`;
-      if (!glowActive) { glow.classList.add('active'); glowActive = true; }
-    }, { passive: true });
-    document.addEventListener('mouseleave', () => glow.classList.remove('active'));
-  }
-
   /* ---------- 3D tilt on interactive cards ---------- */
   if (canHover && !reducedMotion) {
     const tiltCards = document.querySelectorAll('.service-card, .mini-service-card, .feature-card, .value-card, .testimonial-card, .office-card, .cert-card, .showcase-item');
