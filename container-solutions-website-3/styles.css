@@ -318,6 +318,40 @@ a:hover {
   animation: csDrift 20s ease-in-out infinite reverse;
 }
 
+/* hologram-style orbit rings — thin rotating outlines layered over the
+   soft ambient blobs above, a nod to the futuristic hero reference */
+.hologram-ring {
+  position: absolute;
+  z-index: 1;
+  border-radius: 50%;
+  border: 1px solid rgba(233, 101, 27, 0.25);
+  pointer-events: none;
+}
+
+.hologram-ring::before {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border-radius: 50%;
+  border: 1px dashed rgba(11, 35, 64, 0.15);
+}
+
+.hologram-ring.ring-a {
+  width: 340px;
+  height: 340px;
+  top: 8%;
+  right: 6%;
+  animation: csOrbit 26s linear infinite;
+}
+
+.hologram-ring.ring-b {
+  width: 220px;
+  height: 220px;
+  bottom: 10%;
+  right: 18%;
+  animation: csOrbit 20s linear infinite reverse;
+}
+
 .video-slider-wrapper .container-ctn {
   position: relative;
   z-index: 2;
@@ -328,15 +362,98 @@ a:hover {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 28px;
+  gap: 22px;
   max-width: 760px;
   padding: 120px 0 80px;
+}
+
+/* status badge, echoing the reference hero's "System Online" pill */
+.hero-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(233, 101, 27, 0.08);
+  border: 1px solid rgba(233, 101, 27, 0.3);
+  color: var(--cs-accent-dark);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  animation: csFadeUp 0.8s ease both;
+}
+
+.hero-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--cs-accent);
+  box-shadow: 0 0 0 0 rgba(233, 101, 27, 0.6);
+  animation: csPulseDot 2s ease-in-out infinite;
+}
+
+@keyframes csPulseDot {
+  0% {
+    box-shadow: 0 0 0 0 rgba(233, 101, 27, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(233, 101, 27, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(233, 101, 27, 0);
+  }
 }
 
 .video-slider-wrapper .hero-heading .big-title {
   font-size: clamp(34px, 5vw, 58px);
   margin-bottom: 18px !important;
   animation: csFadeUp 0.8s ease both;
+}
+
+/* brief entrance "glitch" flicker on the heading only — settles into clean,
+   readable text rather than looping like the reference's continuous effect */
+.hero-glitch {
+  position: relative;
+}
+
+.hero-glitch::before,
+.hero-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.hero-glitch::before {
+  color: #2fb8c6;
+  animation: csGlitchOffset 0.8s steps(2, jump-none) 1;
+  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+}
+
+.hero-glitch::after {
+  color: var(--cs-accent);
+  animation: csGlitchOffset 0.8s steps(2, jump-none) reverse 1;
+  clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+}
+
+@keyframes csGlitchOffset {
+  0% {
+    opacity: 0.85;
+    transform: translate3d(-4px, 0, 0);
+  }
+  30% {
+    opacity: 0.85;
+    transform: translate3d(4px, 0, 0);
+  }
+  60% {
+    opacity: 0.6;
+    transform: translate3d(-2px, 0, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 .video-slider-wrapper .hero-heading p {
@@ -378,6 +495,44 @@ a:hover {
   }
   50% {
     transform: translate(30px, 40px) scale(1.08);
+  }
+}
+
+@keyframes csOrbit {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* cyber-style sheen sweep on the hero buttons, in place of the reference's
+   glowing cyber-btn hover */
+.video-slider-wrapper .primaryBtn,
+.video-slider-wrapper .secondaryBtn {
+  position: relative;
+}
+
+.video-slider-wrapper .primaryBtn::after,
+.video-slider-wrapper .secondaryBtn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.35) 45%, transparent 70%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+
+.video-slider-wrapper .primaryBtn:hover::after,
+.video-slider-wrapper .secondaryBtn:hover::after {
+  animation: csSheen 0.9s ease;
+}
+
+@keyframes csSheen {
+  to {
+    transform: translateX(120%);
   }
 }
 
