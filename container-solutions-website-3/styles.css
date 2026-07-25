@@ -325,6 +325,18 @@ a:hover {
   background: var(--cs-surface) !important;
   overflow: hidden;
   isolation: isolate;
+  /* the full-screen hero itself fades in on load, in addition to the
+     heading/badge/buttons already staggering in inside it */
+  animation: csHeroReveal 1.1s ease both;
+}
+
+@keyframes csHeroReveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* the dark full-bleed video is dropped in favor of the same real photo,
