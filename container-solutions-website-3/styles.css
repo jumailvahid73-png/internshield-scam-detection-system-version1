@@ -228,8 +228,26 @@ a:hover {
   margin-right: auto;
 }
 
+/* this logo has no width/height attributes and no size of its own in the
+   markup — same category of bug as the hero heading and the about-section
+   portrait: without the site's real CSS it would render at whatever size
+   the source file actually is, so it's pinned here explicitly. */
+.main-navbar .navbar-brand img {
+  height: 48px;
+  width: auto;
+  max-width: 220px;
+  object-fit: contain;
+}
+
 .main-navbar .navbar-brand .logo-mobile {
   display: none;
+}
+
+.offcanvas-header .navbar-brand img {
+  height: 40px;
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
 }
 
 @media (max-width: 991px) {
@@ -1083,10 +1101,25 @@ footer .certified-img {
 
 /* ---------- Floating side/bottom action bars ---------- */
 
+/* neither the circle nor its icon has a size anywhere in the markup —
+   same bug class as the header logo: the real site's CSS supplies both,
+   so both need pinning here to be self-sufficient. */
 .leftFixedBox .iconBox {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: var(--cs-ink);
   box-shadow: var(--cs-shadow);
   transition: transform 0.3s ease;
+}
+
+.leftFixedBox .iconBox img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
 }
 
 .leftFixedBox .iconBox:hover {
@@ -1107,7 +1140,19 @@ footer .certified-img {
 }
 
 .fixedBottomBar .a-width .iconBox {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: var(--cs-accent-soft);
+}
+
+.fixedBottomBar .a-width .iconBox img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
 }
 
 /* ---------- Modal / enquiry form ---------- */
