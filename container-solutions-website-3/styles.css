@@ -35,6 +35,18 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* nearly every content image on the page (client logos, the about-section
+   portrait, the brochure graphic, modal art, etc.) depends on the site's
+   own .img-fluid utility for responsive sizing. Given the hero-heading and
+   lead-img bugs already found here, don't assume that utility is reliably
+   present — define it ourselves so images can't silently render at native
+   pixel size or collapse to nothing. */
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--cs-heading-font) !important;
   color: var(--cs-ink) !important;
@@ -762,12 +774,30 @@ a:hover {
 .choose-box .title {
   font-size: 17px !important;
   margin-bottom: 8px !important;
+  color: var(--cs-ink) !important;
 }
 
 .conuter-wrapper .lead-img {
+  /* inline-block shrink-wraps to the image below rather than stretching to
+     the full column — it's the positioning anchor for the counter badge
+     (position:absolute, bottom-right), and full-width made the badge float
+     off to the side instead of overlapping the photo's corner */
   position: relative;
+  display: inline-block;
+  max-width: 100%;
   border-radius: var(--cs-radius-lg);
   overflow: hidden;
+}
+
+/* sized here directly rather than trusting the site's own .img-fluid
+   utility to be present/working — same lesson as the hero heading bug */
+.conuter-wrapper .lead-img picture,
+.conuter-wrapper .lead-img img {
+  display: block;
+  width: 320px;
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
 }
 
 .conuter-wrapper .counter-title {
@@ -910,6 +940,7 @@ a:hover {
 .testimonial-box .review-wrapper h3 {
   font-size: 15px !important;
   margin-bottom: 2px !important;
+  color: var(--cs-ink) !important;
 }
 
 .testimonial-box .review-wrapper .left p {
