@@ -79,6 +79,19 @@ a:hover {
   font-weight: 800 !important;
   line-height: 1.2 !important;
   letter-spacing: -0.3px;
+  /* the site's own stylesheet defines .big-title too (likely for a
+     gradient/clipped-text look elsewhere) and, being a class selector, can
+     out-specificity our generic "h1,h2..." color rule regardless of load
+     order — pin color and neutralize any clip-text trick so it can never
+     render invisible again. */
+  color: var(--cs-ink) !important;
+  -webkit-text-fill-color: var(--cs-ink) !important;
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .discription p,
@@ -276,16 +289,76 @@ a:hover {
   min-height: 100vh;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
   background: var(--cs-surface) !important;
   overflow: hidden;
   isolation: isolate;
 }
 
-/* the original dark video/photo banner is swapped for a clean white hero;
-   the media element stays in the markup (untouched) but is visually hidden */
-.video-slider-wrapper .video-slider,
-.video-slider-wrapper .video-container {
+/* the dark full-bleed video is dropped in favor of the same real photo,
+   framed as an animated visual alongside the copy instead of a background */
+.video-slider-wrapper video {
   display: none;
+}
+
+.video-slider-wrapper .video-slider {
+  position: relative;
+  z-index: 2;
+  flex: 1 1 360px;
+  max-width: 460px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.video-slider-wrapper .home-banner-media {
+  position: relative;
+  border-radius: var(--cs-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--cs-shadow-hover);
+  animation: csFadeUp 0.9s ease 0.1s both, csFloat 7s ease-in-out 1s infinite;
+}
+
+.video-slider-wrapper .home-banner-poster {
+  display: block;
+  border-radius: var(--cs-radius-lg);
+  overflow: hidden;
+}
+
+.video-slider-wrapper .home-banner-poster img {
+  display: block;
+  width: 100%;
+  height: auto;
+  animation: csKenBurns 14s ease-in-out infinite alternate;
+}
+
+.video-slider-wrapper .home-banner-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(233, 101, 27, 0.35);
+  box-shadow: inset 0 0 0 8px rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+}
+
+@keyframes csKenBurns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes csFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
 }
 
 /* soft ambient motion standing in for the removed video background */
@@ -352,19 +425,34 @@ a:hover {
   animation: csOrbit 20s linear infinite reverse;
 }
 
+/* balancing accent on the text side, so the motion isn't one-sided */
+.hologram-ring.ring-c {
+  width: 200px;
+  height: 200px;
+  top: 62%;
+  left: 2%;
+  opacity: 0.7;
+  animation: csOrbit 24s linear infinite;
+}
+
 .video-slider-wrapper .container-ctn {
   position: relative;
   z-index: 2;
-  width: 100%;
+  flex: 1 1 560px;
+  width: auto;
+  margin: 0;
 }
 
 .video-slider-wrapper .left-content {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 22px;
-  max-width: 760px;
-  padding: 120px 0 80px;
+  gap: 18px;
+  max-width: 680px;
+  /* left padding keeps hero text/buttons clear of the fixed WhatsApp/call
+     widget, which sits at the bottom-left of the viewport and would
+     otherwise land on top of this content since the hero is exactly 100vh */
+  padding: 100px 0 60px 76px;
 }
 
 /* status badge, echoing the reference hero's "System Online" pill */
@@ -427,12 +515,14 @@ a:hover {
 
 .hero-glitch::before {
   color: #2fb8c6;
+  -webkit-text-fill-color: #2fb8c6;
   animation: csGlitchOffset 0.8s steps(2, jump-none) 1;
   clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
 }
 
 .hero-glitch::after {
   color: var(--cs-accent);
+  -webkit-text-fill-color: var(--cs-accent);
   animation: csGlitchOffset 0.8s steps(2, jump-none) reverse 1;
   clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
 }
@@ -538,11 +628,21 @@ a:hover {
 
 @media (max-width: 767px) {
   .video-slider-wrapper {
-    min-height: 90vh;
+    min-height: auto;
   }
 
   .video-slider-wrapper .left-content {
-    padding: 100px 0 60px;
+    padding: 100px 0 40px 60px;
+  }
+
+  .video-slider-wrapper .video-slider {
+    padding: 0 24px 60px;
+  }
+
+  .hologram-ring.ring-a,
+  .hologram-ring.ring-b,
+  .hologram-ring.ring-c {
+    transform: scale(0.6);
   }
 }
 
@@ -1110,10 +1210,6 @@ footer .certified-img {
 }
 
 @media (max-width: 575px) {
-  .video-slider-wrapper .left-content {
-    bottom: 24px;
-  }
-
   .primaryBtn a,
   .whiteBtn a,
   .secondaryBtn a {
