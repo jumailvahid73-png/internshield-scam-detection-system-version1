@@ -29,6 +29,9 @@ a single **HTML widget**. Paste the entire contents of the matching file from
 | About Us | `pages/about.html` | Slug: `about` | `/about/` |
 | Products (listing) | `pages/products.html` | Slug: `products` | `/products/` |
 | Contact | `pages/contact.html` | Slug: `contact` | `/contact/` |
+| Services | `pages/services.html` | Slug: `services` | `/services/` |
+| Gallery | `pages/gallery.html` | Slug: `gallery` | `/gallery/` |
+| Blog (listing) | `pages/blog.html` | Slug: `blog` | `/blog/` |
 | Adjustable Warehouse Storage Pallet Racks | `products/adjustable-warehouse-storage-pallet-racks.html` | Page slug: `adjustable-warehouse-storage-pallet-racks`, Parent: **Products** | `/products/adjustable-warehouse-storage-pallet-racks/` |
 | Automatic Storage and Retrieval System | `products/automatic-storage-and-retrieval-system.html` | Page slug: `automatic-storage-and-retrieval-system`, Parent: **Products** | `/products/automatic-storage-and-retrieval-system/` |
 | Cantilever Racking | `products/cantilever-racking.html` | Page slug: `cantilever-racking`, Parent: **Products** | `/products/cantilever-racking/` |
@@ -45,10 +48,15 @@ a single **HTML widget**. Paste the entire contents of the matching file from
 | Heavy Duty Drive In Rack | `products/heavy-duty-drive-in-rack.html` | Page slug: `heavy-duty-drive-in-rack`, Parent: **Products** | `/products/heavy-duty-drive-in-rack/` |
 | Heavy Duty Pallet Rack System | `products/heavy-duty-pallet-rack-system.html` | Page slug: `heavy-duty-pallet-rack-system`, Parent: **Products** | `/products/heavy-duty-pallet-rack-system/` |
 | Heavy Duty Pallet Racking Shelving | `products/heavy-duty-pallet-racking-shelving.html` | Page slug: `heavy-duty-pallet-racking-shelving`, Parent: **Products** | `/products/heavy-duty-pallet-racking-shelving/` |
+| 5 Signs Your Warehouse Needs a Racking Upgrade | `blog/signs-your-warehouse-needs-a-racking-upgrade.html` | Page slug: `signs-your-warehouse-needs-a-racking-upgrade`, Parent: **Blog** | `/blog/signs-your-warehouse-needs-a-racking-upgrade/` |
+| How to Choose the Right Pallet Racking System for Your Business | `blog/how-to-choose-the-right-pallet-racking-system.html` | Page slug: `how-to-choose-the-right-pallet-racking-system`, Parent: **Blog** | `/blog/how-to-choose-the-right-pallet-racking-system/` |
+| Warehouse Racking Safety: A Practical Inspection Checklist | `blog/warehouse-racking-safety-inspection-checklist.html` | Page slug: `warehouse-racking-safety-inspection-checklist`, Parent: **Blog** | `/blog/warehouse-racking-safety-inspection-checklist/` |
 
 **Important**: create the **Products** listing page first, since all 16 product
 pages must have it set as their **Parent** (Page Attributes panel) for the
-`/products/<slug>/` URLs to resolve correctly.
+`/products/<slug>/` URLs to resolve correctly. Likewise create the **Blog**
+listing page first, since the blog post pages use it as their **Parent** for
+the `/blog/<slug>/` URLs to resolve correctly.
 
 ## 4. Notes
 - The floating WhatsApp button, mobile nav menu, scroll animations and stat
