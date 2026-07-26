@@ -1,0 +1,648 @@
+{
+  "dnv": [
+    {
+      "file": "10ft-offshore-office-container.webp",
+      "alt": "10ft Offshore Office Container"
+    },
+    {
+      "file": "20ft-half-height-basket-certified-by-lr-to-dnv2-7-1.webp",
+      "alt": "20ft Half height basket certified by LR to DNV2.7-1"
+    },
+    {
+      "file": "20ft-offshore-containers-certified-by-lr-to-dnv2-7-1-stds.webp",
+      "alt": "20ft Offshore containers certified by LR to DNV2.7-1 stds"
+    },
+    {
+      "file": "20ft-open-top-offshore-containers-for-various-use.webp",
+      "alt": "20ft Open Top Offshore Containers for various use"
+    },
+    {
+      "file": "20ft-open-top-offshore-use-containers-certified-by-lr.webp",
+      "alt": "20ft Open Top offshore use containers certified by LR"
+    },
+    {
+      "file": "20ft-refrigerated-offshore-use-containers-dnv2-7-1.webp",
+      "alt": "20ft Refrigerated Offshore use containers DNV2.7-1"
+    },
+    {
+      "file": "2oft-offshore-basket-manufacturing-at-dubai-facility.webp",
+      "alt": "2oft Offshore basket Manufacturing at Dubai facility"
+    },
+    {
+      "file": "2oft-offshore-closed-container-dnv-certified.webp",
+      "alt": "2oft Offshore closed container DNV certified"
+    },
+    {
+      "file": "3rd-party-inspection.webp",
+      "alt": "3rd party inspection"
+    },
+    {
+      "file": "5ft-x-5ft-mini-offshore-containers.webp",
+      "alt": "5ft x 5ft Mini offshore Containers"
+    },
+    {
+      "file": "container-inspection.webp",
+      "alt": "Container Inspection"
+    },
+    {
+      "file": "dnv-2-7-1-offshore-baskets.webp",
+      "alt": "DNV 2.7-1, Offshore Baskets"
+    },
+    {
+      "file": "dnv-2-7-1.webp",
+      "alt": "DNV 2.7-1"
+    },
+    {
+      "file": "mini-offshore-containers-dnv-2-7-1-lr-certified.webp",
+      "alt": "Mini offshore containers DNV 2.7-1 LR certified"
+    },
+    {
+      "file": "offshore-containers.webp",
+      "alt": "Offshore Containers"
+    },
+    {
+      "file": "offshore-use-mini-container-with-shelves.webp",
+      "alt": "Offshore use Mini container with shelves"
+    },
+    {
+      "file": "offshore-use-tool-baskets-dnv-certified.webp",
+      "alt": "Offshore use tool baskets DNV certified"
+    }
+  ],
+  "conversion": [
+    {
+      "file": "20ft-container-modification-inprogress.webp",
+      "alt": "20ft Container modification inprogress"
+    },
+    {
+      "file": "20ft-shipping-containers-converted-to-accomodation-camps-for-site-use.webp",
+      "alt": "20ft Shipping Containers Converted to accomodation camps for site use"
+    },
+    {
+      "file": "20ft-tools-storage-container-converted-from-used-shipping-container.webp",
+      "alt": "20ft Tools storage container converted from used shipping container"
+    },
+    {
+      "file": "20ft-brand-new-shipping-container-converted-to-storage-container.webp",
+      "alt": "20ft brand new shipping container converted to storage container"
+    },
+    {
+      "file": "20ft-shipping-container-modified-to-command-unit.webp",
+      "alt": "20ft shipping container Modified to command unit"
+    },
+    {
+      "file": "2oft-iso-container-converted-to-instrument-control-room.webp",
+      "alt": "2oft ISO Container converted to Instrument Control Room"
+    },
+    {
+      "file": "2oft-offshore-inverter-room-container.webp",
+      "alt": "2oft Offshore inverter room container"
+    },
+    {
+      "file": "2oft-shipping-container-toilet-shower-units-with-fresh-waste-water-tanks.webp",
+      "alt": "2oft Shipping Container Toilet & Shower units with fresh & waste water tanks"
+    },
+    {
+      "file": "40ft-high-cube-shipping-container-converted-to-corporate-office.webp",
+      "alt": "40ft High Cube Shipping Container Converted to Corporate office"
+    },
+    {
+      "file": "40ft-pump-room-container-modified-from-40ft-dry-shipping-container.webp",
+      "alt": "40ft Pump room container modified from 40ft Dry shipping container"
+    },
+    {
+      "file": "40ft-thermal-energy-storage-container-from-40-brand-new-iso-container.webp",
+      "alt": "40ft Thermal Energy Storage Container from 40' brand new ISO Container"
+    },
+    {
+      "file": "container-cabin.webp",
+      "alt": "Container Cabin"
+    },
+    {
+      "file": "container-conversion-dimension-marking-quality-control.webp",
+      "alt": "Container Conversion- Dimension marking & Quality control"
+    },
+    {
+      "file": "container-modification.webp",
+      "alt": "Container Modification"
+    },
+    {
+      "file": "container-fabrication-inpogress.webp",
+      "alt": "Container fabrication inpogress"
+    },
+    {
+      "file": "containerized-fire-training-units.webp",
+      "alt": "Containerized Fire Training Units"
+    },
+    {
+      "file": "containerized-office-complex.webp",
+      "alt": "Containerized Office complex"
+    },
+    {
+      "file": "iso-converted-joined-containers.webp",
+      "alt": "ISO converted Joined containers"
+    },
+    {
+      "file": "insulated-workshop-containers-modified-from-used-container.webp",
+      "alt": "Insulated workshop containers modified from used container"
+    },
+    {
+      "file": "mobile-power.webp",
+      "alt": "mobile power"
+    }
+  ],
+  "trading": [
+    {
+      "file": "20-ft-std-brand-new-container.webp",
+      "alt": "20 ft std brand new container"
+    },
+    {
+      "file": "20ft-dnv-27-1-offershore-certified-referigerater-container.webp",
+      "alt": "20ft DNV 27-1 offershore certified referigerater container"
+    },
+    {
+      "file": "20ft-dry-shipping-container.webp",
+      "alt": "20ft dry shipping container"
+    },
+    {
+      "file": "20ft-new-referigereted-container-with-carrier-unit-genset.webp",
+      "alt": "20ft new referigereted container with carrier unit & genset"
+    },
+    {
+      "file": "40ft-std-new-shipping-container-loading-delivery.webp",
+      "alt": "40ft std new shipping container loading & delivery"
+    },
+    {
+      "file": "brand-new-40ft-blue-colour-shipping-containers.webp",
+      "alt": "brand new 40ft blue colour shipping containers"
+    },
+    {
+      "file": "brand-new-40ft-high-cube-container.webp",
+      "alt": "brand new 40ft high cube  container "
+    },
+    {
+      "file": "brand-new-40ft-high-cube-referigerater-container-with-carrier-machinery.webp",
+      "alt": "brand new 40ft high cube referigerater container with carrier machinery"
+    },
+    {
+      "file": "brand-new-iso-shipping-40ft-containers.webp",
+      "alt": "brand new ISO shipping 40ft containers"
+    },
+    {
+      "file": "brand-new-iso-shipping-40ft-standard-containers.webp",
+      "alt": "brand new ISO shipping 40ft standard  containers"
+    },
+    {
+      "file": "container-depot-services.webp",
+      "alt": "container depot services"
+    },
+    {
+      "file": "container-solutions-jebel-ali-dubai-facility.webp",
+      "alt": "container solutions jebel ali dubai facility"
+    },
+    {
+      "file": "containers-stacked-at-container-solution-india-deport.webp",
+      "alt": "containers stacked at container solution india deport"
+    },
+    {
+      "file": "continer-depot-opertions.webp",
+      "alt": "continer depot opertions"
+    },
+    {
+      "file": "continer-solution-dic-dubai-faciliyty.webp",
+      "alt": "continer solution DIC dubai faciliyty"
+    },
+    {
+      "file": "new-40ft-hc-blue-colour-shipping-containers.webp",
+      "alt": "new 40ft HC blue colour shipping containers"
+    },
+    {
+      "file": "new-iso-40-ft-standard-shipping-container-for-projects.webp",
+      "alt": "new ISO 40 ft standard shipping container for projects"
+    },
+    {
+      "file": "serviced-iso-shipping-container-stack-at-india-facility.webp",
+      "alt": "serviced iso shipping container stack at india facility"
+    },
+    {
+      "file": "shippg-container.webp",
+      "alt": "shippg container"
+    },
+    {
+      "file": "shipping-container-depot-service-to-shipping-lines.webp",
+      "alt": "shipping container depot service to shipping lines"
+    },
+    {
+      "file": "shipping-container-handing.webp",
+      "alt": "shipping container handing"
+    },
+    {
+      "file": "used-20ft-referigerated-iso-shipping-containers.webp",
+      "alt": "used  20ft referigerated iso shipping containers"
+    },
+    {
+      "file": "used-20-ft-40-ft-iso-shipping-container.webp",
+      "alt": "used 20 ft & 40 ft iso shipping container"
+    },
+    {
+      "file": "used-20-ft-cargo-worthy-shipping-containers.webp",
+      "alt": "used 20 ft cargo worthy shipping containers"
+    }
+  ],
+  "retail": [
+    {
+      "file": "40ft-iso-container-modified-to-rental-units.webp",
+      "alt": "40ft ISO Container modified to rental units"
+    },
+    {
+      "file": "container-retail-outlet.webp",
+      "alt": "Container Retail outlet"
+    },
+    {
+      "file": "container-building.webp",
+      "alt": "Container building"
+    },
+    {
+      "file": "container-complex.webp",
+      "alt": "Container complex"
+    },
+    {
+      "file": "containerized-retail-outlet.webp",
+      "alt": "Containerized Retail outlet"
+    },
+    {
+      "file": "equipment-container.webp",
+      "alt": "Equipment Container"
+    },
+    {
+      "file": "kitchen-containers-modified-from-iso-dry-cargo-containers.webp",
+      "alt": "Kitchen Containers modified from ISO dry cargo containers"
+    },
+    {
+      "file": "portable-container-cafeteria.webp",
+      "alt": "Portable Container Cafeteria"
+    },
+    {
+      "file": "restaurant-container.webp",
+      "alt": "Restaurant Container"
+    },
+    {
+      "file": "restaurant-container2.webp",
+      "alt": "Restaurant Container2"
+    },
+    {
+      "file": "used-shipping-container-converted-to-container-home.webp",
+      "alt": "Used shipping container converted to container home"
+    }
+  ],
+  "depot": [
+    {
+      "file": "container-damege-repair.webp",
+      "alt": "container damege repair"
+    },
+    {
+      "file": "container-depot-services.webp",
+      "alt": "container depot services"
+    },
+    {
+      "file": "container-painting-touch-uo.webp",
+      "alt": "container painting touch uo"
+    },
+    {
+      "file": "container-repair-cut-welding.webp",
+      "alt": "container repair cut welding"
+    },
+    {
+      "file": "container-repairing.webp",
+      "alt": "container repairing"
+    },
+    {
+      "file": "container-washing-services.webp",
+      "alt": "container washing services"
+    },
+    {
+      "file": "depot-services.webp",
+      "alt": "depot services"
+    },
+    {
+      "file": "used-container.webp",
+      "alt": "used container"
+    }
+  ],
+  "team": [
+    {
+      "file": "container-solution-dubai-team.webp",
+      "alt": "container solution dubai team"
+    },
+    {
+      "file": "container-solution-india-team.webp",
+      "alt": "container solution india team"
+    },
+    {
+      "file": "container-solution-omen-team.webp",
+      "alt": "container solution omen team"
+    }
+  ],
+  "modular": [
+    {
+      "file": "57m-x-11m-steel-modular-unit-built-at-mundra-india.webp",
+      "alt": "57M x 11M Steel Modular unit built at Mundra, India"
+    },
+    {
+      "file": "custom-manffactured-e-house-with-hvac-fire-systems.webp",
+      "alt": "Custom Manffactured E-House with HVAC & Fire Systems"
+    },
+    {
+      "file": "custom-made-steel-modular-unit-assembly.webp",
+      "alt": "Custom made Steel Modular unit Assembly"
+    },
+    {
+      "file": "defense-special-forces-training-built-from-shipping-containers.webp",
+      "alt": "Defense special forces training built from shipping containers"
+    },
+    {
+      "file": "hvac-installation-in-modular-e-house-unit.webp",
+      "alt": "HVAC Installation in Modular E House Unit"
+    },
+    {
+      "file": "lifting-spreader-for-modular-steel-units.webp",
+      "alt": "Lifting Spreader for Modular Steel units"
+    },
+    {
+      "file": "modular-building.webp",
+      "alt": "Modular Building"
+    },
+    {
+      "file": "modular-e-house-electrical-fire-systems-installation.webp",
+      "alt": "Modular E house Electrical & Fire systems Installation"
+    },
+    {
+      "file": "modular-unit-electrical-inspection.webp",
+      "alt": "Modular unit electrical Inspection"
+    },
+    {
+      "file": "multiple-steel-e-house-modular-units-built-at-dubai-facility.webp",
+      "alt": "Multiple Steel E House Modular Units built at Dubai facility"
+    },
+    {
+      "file": "ready-to-use-steel-ehouse-modular-unit.webp",
+      "alt": "Ready to use Steel Ehouse modular unit"
+    },
+    {
+      "file": "remote-army-training-modular-units-modified-from-shipping-containers.webp",
+      "alt": "Remote Army training modular units modified from shipping containers"
+    },
+    {
+      "file": "special-forces-training-module-built-from-shipping-containers.webp",
+      "alt": "Special Forces Training Module built from Shipping Containers"
+    },
+    {
+      "file": "steel-modular-e-house-under-construction-at-india-facility.webp",
+      "alt": "Steel Modular E house under construction at India facility"
+    },
+    {
+      "file": "testing-commissioning-of-electrical-control-panels-in-modular-units.webp",
+      "alt": "Testing Commissioning of Electrical control panels in Modular Units"
+    },
+    {
+      "file": "transportation-of-oversize-modular-steel-units-on-low-bed-trailer.webp",
+      "alt": "Transportation of oversize modular steel units on low bed trailer"
+    }
+  ],
+  "blog": [
+    {
+      "file": "blog1711519668.webp",
+      "alt": "blog1711519668"
+    },
+    {
+      "file": "blog1778503969.webp",
+      "alt": "blog1778503969"
+    },
+    {
+      "file": "blog1779087466.webp",
+      "alt": "blog1779087466"
+    },
+    {
+      "file": "blog1779704372.webp",
+      "alt": "blog1779704372"
+    },
+    {
+      "file": "blog1780916021.webp",
+      "alt": "blog1780916021"
+    },
+    {
+      "file": "blog1781248359.webp",
+      "alt": "blog1781248359"
+    },
+    {
+      "file": "blog1782383005.webp",
+      "alt": "blog1782383005"
+    },
+    {
+      "file": "blog1784617660.webp",
+      "alt": "blog1784617660"
+    }
+  ],
+  "clients": [
+    {
+      "file": "group-companies1709635267.webp",
+      "alt": "group-companies1709635267"
+    },
+    {
+      "file": "group-companies1709635318.webp",
+      "alt": "group-companies1709635318"
+    },
+    {
+      "file": "group-companies1709635355.webp",
+      "alt": "group-companies1709635355"
+    },
+    {
+      "file": "group-companies1709635404.webp",
+      "alt": "group-companies1709635404"
+    },
+    {
+      "file": "group-companies1709635419.webp",
+      "alt": "group-companies1709635419"
+    },
+    {
+      "file": "group-companies1709635432.webp",
+      "alt": "group-companies1709635432"
+    },
+    {
+      "file": "group-companies1709635546.webp",
+      "alt": "group-companies1709635546"
+    },
+    {
+      "file": "group-companies1709635561.webp",
+      "alt": "group-companies1709635561"
+    },
+    {
+      "file": "group-companies1709635584.webp",
+      "alt": "group-companies1709635584"
+    },
+    {
+      "file": "group-companies1709635642.webp",
+      "alt": "group-companies1709635642"
+    },
+    {
+      "file": "group-companies1709635658.webp",
+      "alt": "group-companies1709635658"
+    },
+    {
+      "file": "group-companies1709635690.webp",
+      "alt": "group-companies1709635690"
+    },
+    {
+      "file": "group-companies1709635861.webp",
+      "alt": "group-companies1709635861"
+    },
+    {
+      "file": "group-companies1709635887.webp",
+      "alt": "group-companies1709635887"
+    },
+    {
+      "file": "group-companies1709635903.webp",
+      "alt": "group-companies1709635903"
+    },
+    {
+      "file": "group-companies1709635914.webp",
+      "alt": "group-companies1709635914"
+    },
+    {
+      "file": "group-companies1709635938.webp",
+      "alt": "group-companies1709635938"
+    },
+    {
+      "file": "group-companies1709635961.webp",
+      "alt": "group-companies1709635961"
+    },
+    {
+      "file": "group-companies1709635982.webp",
+      "alt": "group-companies1709635982"
+    },
+    {
+      "file": "group-companies1709636113.webp",
+      "alt": "group-companies1709636113"
+    },
+    {
+      "file": "group-companies1709636134.webp",
+      "alt": "group-companies1709636134"
+    },
+    {
+      "file": "group-companies1709636166.webp",
+      "alt": "group-companies1709636166"
+    },
+    {
+      "file": "group-companies1710832966.webp",
+      "alt": "group-companies1710832966"
+    },
+    {
+      "file": "group-companies1710833071.webp",
+      "alt": "group-companies1710833071"
+    },
+    {
+      "file": "group-companies1710833226.webp",
+      "alt": "group-companies1710833226"
+    },
+    {
+      "file": "group-companies1710833418.webp",
+      "alt": "group-companies1710833418"
+    },
+    {
+      "file": "group-companies1710833669.webp",
+      "alt": "group-companies1710833669"
+    },
+    {
+      "file": "group-companies1710834009.webp",
+      "alt": "group-companies1710834009"
+    },
+    {
+      "file": "group-companies1710834637.webp",
+      "alt": "group-companies1710834637"
+    },
+    {
+      "file": "group-companies1711088624.webp",
+      "alt": "group-companies1711088624"
+    }
+  ],
+  "containers": [
+    {
+      "file": "ful-enq.png",
+      "alt": "ful-enq"
+    },
+    {
+      "file": "pexels-droneafrica-36771191.jpg",
+      "alt": "pexels-droneafrica-36771191"
+    },
+    {
+      "file": "pexels-felix-haumann-1938529-14617647.jpg",
+      "alt": "pexels-felix-haumann-1938529-14617647"
+    },
+    {
+      "file": "pexels-frans-van-heerden-201846-1624695.jpg",
+      "alt": "pexels-frans-van-heerden-201846-1624695"
+    },
+    {
+      "file": "pexels-jan-van-der-wolf-11680885-33677410.jpg",
+      "alt": "pexels-jan-van-der-wolf-11680885-33677410"
+    },
+    {
+      "file": "pexels-matt-richmond-314917881-13600203-1.jpg",
+      "alt": "pexels-matt-richmond-314917881-13600203 (1)"
+    },
+    {
+      "file": "pexels-matt-richmond-314917881-13600203.jpg",
+      "alt": "pexels-matt-richmond-314917881-13600203"
+    },
+    {
+      "file": "pexels-oliver-dohrn-706160180-21628465.jpg",
+      "alt": "pexels-oliver-dohrn-706160180-21628465"
+    },
+    {
+      "file": "service1708776275.webp",
+      "alt": "service1708776275"
+    },
+    {
+      "file": "service1709634905.webp",
+      "alt": "service1709634905"
+    },
+    {
+      "file": "service1709635012.webp",
+      "alt": "service1709635012"
+    },
+    {
+      "file": "service1709635042.webp",
+      "alt": "service1709635042"
+    },
+    {
+      "file": "service1709635125.webp",
+      "alt": "service1709635125"
+    },
+    {
+      "file": "service1710416812.webp",
+      "alt": "service1710416812"
+    },
+    {
+      "file": "videobg-mobile.webp",
+      "alt": "videobg-mobile"
+    }
+  ],
+  "logo": [
+    {
+      "file": "favicon-32x32.png",
+      "alt": "favicon-32x32"
+    },
+    {
+      "file": "footer-logo1728111009.png",
+      "alt": "footer-logo1728111009"
+    },
+    {
+      "file": "logo1728111008.png",
+      "alt": "logo1728111008"
+    },
+    {
+      "file": "main-logo-canvas.webp",
+      "alt": "main-logo-canvas"
+    }
+  ]
+}
