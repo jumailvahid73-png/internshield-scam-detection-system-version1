@@ -13,7 +13,7 @@ export default function FeaturedSolutions() {
     <section className="relative mx-auto max-w-7xl px-6 py-28">
       <SectionLabel
         eyebrow="What We Build"
-        title="Featured Container Solutions"
+        title="Featured Solutions"
         subtitle="From bespoke conversions to certified offshore engineering — every solution is precision-built for its environment."
       />
 

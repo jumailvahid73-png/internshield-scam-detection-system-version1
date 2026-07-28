@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Search, Menu, X, Sun, Moon, ArrowRight } from 'lucide-react'
 import { navLinks } from '../data/content'
-import { logoMain } from '../data/manifest'
+import { logoMain, logoMobile } from '../data/manifest'
 import MagneticButton from './MagneticButton'
 
 export default function Navbar() {
@@ -46,9 +46,9 @@ export default function Navbar() {
           <Link to="/" className="flex items-center gap-2.5 shrink-0">
             <motion.img
               src={logoMain}
-              alt="Container Solutions"
+              alt="Iron Box"
               whileHover={{ scale: 1.06 }}
-              className={`w-auto object-contain transition-all duration-500 ${scrolled ? 'h-8' : 'h-10'}`}
+              className={`w-auto object-contain transition-all duration-500 ${scrolled ? 'h-7' : 'h-9'}`}
             />
           </Link>
 
@@ -142,7 +142,8 @@ export default function Navbar() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[70] glass-dark backdrop-blur-2xl lg:hidden"
           >
-            <div className="flex justify-end p-6">
+            <div className="flex items-center justify-between p-6">
+              <img src={logoMobile} alt="Iron Box" className="h-7 w-auto object-contain" />
               <button
                 aria-label="Close menu"
                 onClick={() => setOpen(false)}

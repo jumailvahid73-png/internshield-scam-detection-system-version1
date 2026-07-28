@@ -20,7 +20,7 @@ export default function Solutions() {
     <>
       <PageHero
         eyebrow="Our Solutions"
-        title="Engineered Container Solutions, Built to Perform"
+        title="Engineered Container Systems, Built to Perform"
         subtitle="Manufacturing, trading, leasing, depot services and offshore-certified engineering under one roof."
         image={gallery.dnv[7]?.src}
       />

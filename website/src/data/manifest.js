@@ -22,10 +22,10 @@ export const gallery = {
 export const blogImages = toList('blog', 'blog')
 export const clientLogos = toList('clients', 'clients')
 export const heroContainers = toList('containers', 'hero')
-export const logos = toList('logo', 'logo')
 
-export const logoMain = logos.find((l) => l.src.includes('main-logo'))?.src || logos[0]?.src
-export const logoFooter = logos.find((l) => l.src.includes('footer-logo'))?.src || logoMain
+export const logoMain = `${base}/logo/ironbox-wordmark-light.png`
+export const logoMobile = `${base}/logo/ironbox-wordmark-dark.png`
+export const logoFooter = `${base}/logo/ironbox-logo-light.png`
 
 export function allGalleryImages() {
   return Object.entries(gallery).flatMap(([category, items]) =>

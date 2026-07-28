@@ -626,23 +626,5 @@
       "file": "videobg-mobile.webp",
       "alt": "videobg-mobile"
     }
-  ],
-  "logo": [
-    {
-      "file": "favicon-32x32.png",
-      "alt": "favicon-32x32"
-    },
-    {
-      "file": "footer-logo1728111009.png",
-      "alt": "footer-logo1728111009"
-    },
-    {
-      "file": "logo1728111008.png",
-      "alt": "logo1728111008"
-    },
-    {
-      "file": "main-logo-canvas.webp",
-      "alt": "main-logo-canvas"
-    }
   ]
 }

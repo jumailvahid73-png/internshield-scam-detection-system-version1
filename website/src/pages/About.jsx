@@ -14,7 +14,7 @@ export default function About() {
   return (
     <>
       <PageHero
-        eyebrow="About Container Solutions"
+        eyebrow="About Iron Box"
         title={company.aboutHeadline}
         subtitle="Two decades of modular engineering, from Dubai to the world."
         image={gallery.modular[8]?.src}

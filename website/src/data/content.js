@@ -1,11 +1,12 @@
 export const company = {
-  name: 'Container Solutions',
+  name: 'Iron Box',
   founded: 2003,
-  tagline: 'Building the Future with Smart Container Solutions',
+  slogan: 'Trade Without Compromise',
+  tagline: 'Building the Future with Iron Box',
   subtitle:
     'Premium modular container solutions for business, storage, offices, accommodation, industrial projects, and custom engineering.',
   aboutHeadline: 'Engineering the Future of Modular Spaces',
-  about: `Welcome to Container Solutions, where we turn your container needs into innovative realities. Since 2003, we've been pioneers in Dubai, crafting more than just containers — we build solutions. From bespoke conversions and seamless trading to efficient depot services and flexible leasing, we're dedicated to your unique requirements.`,
+  about: `Welcome to Iron Box, where we turn your container needs into innovative realities. Since 2003, we've been pioneers in Dubai, crafting more than just containers — we build solutions. From bespoke conversions and seamless trading to efficient depot services and flexible leasing, we're dedicated to your unique requirements.`,
   aboutExtended: `Our strategic locations in Jebel Ali, Dubai Industrial City, Mundra, Sohar, and Mumbai ensure rapid response, delivering the services you need, exactly when you need them. Envision a modular building, a home, a restaurant, or a retail outlet built with our containers — your vision becomes our blueprint for customization. From a vast inventory of new and pre-owned shipping containers, including specialized refrigerated and certified offshore options, we cater to your needs globally, from the UAE to China and beyond.`,
   mission:
     'To transform container services into extraordinary solutions, meeting diverse global needs with innovation and responsiveness.',
@@ -13,7 +14,7 @@ export const company = {
     'Leading the way in container solutions globally, we envision a future where our creativity and expertise turn every container project into a unique, functional masterpiece.',
   locations: ['Jebel Ali, Dubai', 'Dubai Industrial City', 'Mundra, India', 'Sohar, Oman', 'Mumbai, India'],
   phone: '+971 4 000 0000',
-  email: 'info@containersolutions.ae',
+  email: 'info@ironbox.ae',
 }
 
 export const stats = [
@@ -43,7 +44,7 @@ export const coreValues = [
 ]
 
 export const timeline = [
-  { year: '2003', title: 'Founded in Dubai', body: 'Container Solutions is established, pioneering container trading and conversion services in the UAE.' },
+  { year: '2003', title: 'Founded in Dubai', body: 'Iron Box is established, pioneering container trading and conversion services in the UAE.' },
   { year: '2009', title: 'Depot Network Expansion', body: 'New depot facilities open in Jebel Ali Industrial Area and Dubai Industrial City, adding IICL-certified inspection services.' },
   { year: '2014', title: 'Offshore Certification', body: 'Achieved DNV 2.7-1 / ISO 10855 certification, becoming a trusted offshore container supplier to the oil & gas sector.' },
   { year: '2018', title: 'India & Oman Expansion', body: 'Opened the Mundra (Gujarat) and Sohar (Oman) facilities, extending our footprint across South Asia and the Gulf.' },
@@ -69,7 +70,7 @@ export const services = [
     slug: 'container-trading',
     title: 'Container Trading',
     short: 'The leading container trading company in the UAE, with new, used, refrigerated and offshore stock.',
-    body: `Container Solutions provides a complete range of shipping container solutions and is the leading container trading company in the UAE. Our extensive network of depots in Dubai, India and Oman, along with sales branches in Qatar and Mumbai, positions us to fulfill container requirements worldwide.`,
+    body: `Iron Box provides a complete range of shipping container solutions and is the leading container trading company in the UAE. Our extensive network of depots in Dubai, India and Oman, along with sales branches in Qatar and Mumbai, positions us to fulfill container requirements worldwide.`,
     points: [
       'Refrigerated (reefer) containers for perishable cargo',
       'Rigorously inspected used shipping containers',
@@ -82,7 +83,7 @@ export const services = [
     slug: 'dnv-offshore-containers',
     title: 'DNV Offshore Containers',
     short: 'Explosion-proof, A60-rated offshore containers certified by DNV 2.7-1 / ISO 10855.',
-    body: `Container Solutions leads the way in DNV offshore reefer containers across the UAE, India and beyond. Our engineers design baskets and skids that meet DNV 2.7-1 / ISO 10855 standards, trusted by Halliburton, Shell, Dragon Oil, Saipem, McDermott and Lamprell.`,
+    body: `Iron Box leads the way in DNV offshore reefer containers across the UAE, India and beyond. Our engineers design baskets and skids that meet DNV 2.7-1 / ISO 10855 standards, trusted by Halliburton, Shell, Dragon Oil, Saipem, McDermott and Lamprell.`,
     points: [
       'Explosion-proof & A60 compliant units',
       'Recertification partnerships with BV and DNV',
@@ -95,7 +96,7 @@ export const services = [
     slug: 'modular-steel-buildings',
     title: 'Modular Steel Buildings',
     short: 'e-Houses and prefabricated steel structures engineered off-site, assembled on-site.',
-    body: `Container Solutions is a leading manufacturer of modular steel buildings (e-Houses) in the UAE. Crafted off-site in controlled environments, our structures serve residential, corporate, governmental, military and industrial applications — from student housing to high-security facilities.`,
+    body: `Iron Box is a leading manufacturer of modular steel buildings (e-Houses) in the UAE. Crafted off-site in controlled environments, our structures serve residential, corporate, governmental, military and industrial applications — from student housing to high-security facilities.`,
     points: [
       'Integrated insulation for energy efficiency',
       'Energy-efficient HVAC systems & solar integration',
@@ -121,7 +122,7 @@ export const services = [
     slug: 'depot-services',
     title: 'Container Depot Services',
     short: 'IICL-certified inspection, repair and storage across Dubai, Oman and Mumbai — 15,000+ TEU capacity.',
-    body: `Container Solutions provides a full spectrum of depot services for third-party-owned containers, especially for multinational leasing and shipping companies. Our IICL-certified inspectors conduct thorough inspections, estimations, reporting and repairs.`,
+    body: `Iron Box provides a full spectrum of depot services for third-party-owned containers, especially for multinational leasing and shipping companies. Our IICL-certified inspectors conduct thorough inspections, estimations, reporting and repairs.`,
     points: [
       'Jebel Ali & Dubai Industrial City: 6,000+ TEU capacity',
       'Mundra, Gujarat facility with cloud-based tracking',
@@ -171,13 +172,13 @@ export const whyChooseUs = [
 export const testimonials = [
   {
     quote:
-      "Working with Container Solutions has been an absolute pleasure. Their dedication to excellence is evident in every aspect of their work, from initial concept discussions to final delivery.",
+      "Working with Iron Box has been an absolute pleasure. Their dedication to excellence is evident in every aspect of their work, from initial concept discussions to final delivery.",
     name: 'Marten Olree',
     role: 'Service Manager, Vermeer',
   },
   {
     quote:
-      'Container Solutions delivered outstanding work on our command center container in partnership with EDS. Professionalism, attention to detail and confidentiality were exceptional.',
+      'Iron Box delivered outstanding work on our command center container in partnership with EDS. Professionalism, attention to detail and confidentiality were exceptional.',
     name: 'James Bourke',
     role: 'Technical Director, Energy Driven Systems',
   },
@@ -189,7 +190,7 @@ export const testimonials = [
   },
   {
     quote:
-      'Haris Al Afaq has partnered with Container Solutions since 2003. Their work consistently exemplifies top-tier quality, bolstered by an exceptional team. We wholeheartedly endorse them.',
+      'Haris Al Afaq has partnered with Iron Box since 2003. Their work consistently exemplifies top-tier quality, bolstered by an exceptional team. We wholeheartedly endorse them.',
     name: 'Ashitava Mukherjee',
     role: 'Division Head, Haris Al Afaq',
   },

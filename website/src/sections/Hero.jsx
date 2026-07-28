@@ -135,7 +135,7 @@ export default function Hero() {
             transition={{ duration: 0.7, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
             className="text-gradient"
           >
-            Smart Container Solutions
+            Iron Box
           </motion.span>
         </h1>
 
