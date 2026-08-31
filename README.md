@@ -210,7 +210,7 @@ This ensures:
 
 ## 👨‍💻 Author
 
-**Jmail Vahid**
+**JUMAIL VAHID PT**
 B.Tech CSE (AI & ML)
 MEA Engineering College
 
