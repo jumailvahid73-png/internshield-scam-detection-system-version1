@@ -14,17 +14,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0a0b0e;
-    --bg-alt:#101218;
-    --surface:#15171f;
-    --surface-2:#1b1e28;
-    --border:#262a36;
-    --text:#f2f3f5;
-    --text-dim:#9aa0ac;
-    --text-faint:#6b7180;
-    --accent:#7cf5c4;
-    --accent-2:#8b7cff;
-    --grad:linear-gradient(135deg,#7cf5c4 0%,#8b7cff 100%);
+    --bg:#fafafa;
+    --bg-alt:#f2f3f5;
+    --surface:#ffffff;
+    --surface-2:#f2f3f5;
+    --border:#e4e5ea;
+    --text:#111318;
+    --text-dim:#5a5f70;
+    --text-faint:#8a8fa0;
+    --accent:#0fae82;
+    --accent-2:#6d5bff;
+    --grad:linear-gradient(135deg,#0fae82 0%,#6d5bff 100%);
     --radius:18px;
     --maxw:1180px;
   }
@@ -41,8 +41,8 @@
     content:"";
     position:fixed;inset:0;
     background:
-      radial-gradient(circle at 15% 8%, rgba(124,245,196,0.10), transparent 40%),
-      radial-gradient(circle at 85% 15%, rgba(139,124,255,0.12), transparent 45%);
+      radial-gradient(circle at 15% 8%, rgba(15,174,130,0.08), transparent 40%),
+      radial-gradient(circle at 85% 15%, rgba(109,91,255,0.10), transparent 45%);
     pointer-events:none;
     z-index:0;
   }
@@ -62,7 +62,7 @@
   /* NAV */
   header.nav{
     position:fixed;top:0;left:0;right:0;z-index:50;
-    background:rgba(10,11,14,0.72);
+    background:rgba(250,250,250,0.78);
     backdrop-filter:blur(14px);
     -webkit-backdrop-filter:blur(14px);
     border-bottom:1px solid transparent;
@@ -721,7 +721,7 @@
   burger.addEventListener('click', () => {
     const open = links.style.display === 'flex';
     links.style.display = open ? 'none' : 'flex';
-    links.style.cssText += 'position:fixed;top:64px;left:20px;right:20px;flex-direction:column;background:#101218;border:1px solid #262a36;border-radius:14px;padding:20px;gap:16px;z-index:60;';
+    links.style.cssText += 'position:fixed;top:64px;left:20px;right:20px;flex-direction:column;background:#ffffff;border:1px solid #e4e5ea;border-radius:14px;padding:20px;gap:16px;z-index:60;box-shadow:0 12px 30px -12px rgba(17,19,24,0.18);';
     if(open) links.style.display = 'none';
   });
   links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
