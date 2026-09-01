@@ -50,7 +50,7 @@
   a{color:inherit;text-decoration:none;}
   ul{list-style:none;}
   img{max-width:100%;}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px;position:relative;z-index:1;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-left:32px;padding-right:32px;position:relative;z-index:1;}
   section{position:relative;z-index:1;padding:120px 0;}
   .eyebrow{
     display:inline-flex;align-items:center;gap:8px;
@@ -104,6 +104,27 @@
     min-height:100vh;display:flex;flex-direction:column;justify-content:center;
     padding-top:140px;padding-bottom:80px;
   }
+  .hero-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:48px;align-items:center;}
+  .hero-photo-wrap{position:relative;justify-self:center;width:100%;max-width:340px;}
+  .hero-photo-blob{
+    position:absolute;top:-14%;left:-14%;width:128%;height:128%;
+    background:var(--grad);opacity:0.35;filter:blur(70px);border-radius:44% 56% 60% 40% / 50% 45% 55% 50%;
+    z-index:0;will-change:transform;
+  }
+  .hero-photo{
+    position:relative;z-index:1;aspect-ratio:3/4;border-radius:28px;overflow:hidden;
+    border:1px solid var(--border);background:var(--surface);
+    box-shadow:0 30px 60px -28px rgba(17,19,24,0.28);
+    will-change:transform;
+  }
+  .hero-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+  .hero-photo-badge{
+    position:absolute;left:50%;bottom:-20px;transform:translateX(-50%);z-index:2;
+    display:flex;align-items:center;gap:8px;white-space:nowrap;
+    background:var(--surface);border:1px solid var(--border);border-radius:100px;
+    padding:10px 18px;font-size:12.5px;font-weight:600;color:var(--text);
+    box-shadow:0 14px 30px -16px rgba(17,19,24,0.3);
+  }
   .hero .tag-row{display:flex;align-items:center;gap:10px;margin-bottom:26px;color:var(--text-dim);font-size:14px;}
   .dot-live{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(124,245,196,0.15);}
   .hero h1{
@@ -118,7 +139,7 @@
     font-size:clamp(16px,2vw,21px);color:var(--text-dim);font-weight:500;max-width:640px;margin-bottom:34px;
   }
   .hero .role strong{color:var(--text);font-weight:600;}
-  .hero-actions{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:64px;}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:16px;}
   .btn{
     display:inline-flex;align-items:center;gap:10px;
     padding:15px 28px;border-radius:100px;font-size:14.5px;font-weight:600;
@@ -130,7 +151,7 @@
   .btn-ghost:hover{border-color:var(--text-dim);transform:translateY(-2px);}
   .btn svg{width:14px;height:14px;}
 
-  .hero-stats{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--border);padding-top:32px;}
+  .hero-stats{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--border);padding-top:32px;margin-top:56px;}
   .hero-stats .stat{flex:1 1 160px;padding-right:24px;}
   .hero-stats .stat h3{font-size:30px;margin-bottom:4px;}
   .hero-stats .stat p{font-size:13px;color:var(--text-faint);}
@@ -279,21 +300,47 @@
   .to-top svg{width:14px;height:14px;}
 
   /* reveal animation */
-  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.16,.8,.24,1), transform .7s cubic-bezier(.16,.8,.24,1);transition-delay:var(--stagger,0ms);}
   .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* stagger children of grids as they reveal */
+  .skills-grid .skill-card:nth-child(1),.project-grid .project-card:nth-child(1){--stagger:0ms;}
+  .skills-grid .skill-card:nth-child(2),.project-grid .project-card:nth-child(2){--stagger:70ms;}
+  .skills-grid .skill-card:nth-child(3),.project-grid .project-card:nth-child(3){--stagger:140ms;}
+  .skills-grid .skill-card:nth-child(4),.project-grid .project-card:nth-child(4){--stagger:210ms;}
+  .skills-grid .skill-card:nth-child(5),.project-grid .project-card:nth-child(5){--stagger:280ms;}
+  .skills-grid .skill-card:nth-child(6),.project-grid .project-card:nth-child(6){--stagger:350ms;}
+  .skills-grid .skill-card:nth-child(7),.project-grid .project-card:nth-child(7){--stagger:420ms;}
+  .strength-item:nth-child(1){--stagger:0ms;}
+  .strength-item:nth-child(2){--stagger:80ms;}
+  .strength-item:nth-child(3){--stagger:160ms;}
+  .strength-item:nth-child(4){--stagger:240ms;}
+  .strength-item:nth-child(5){--stagger:320ms;}
+  .edu-mini-grid .edu-mini:nth-child(1){--stagger:0ms;}
+  .edu-mini-grid .edu-mini:nth-child(2){--stagger:100ms;}
+
+  /* scroll progress bar */
+  .scroll-progress{position:fixed;top:0;left:0;height:3px;width:0%;background:var(--grad);z-index:60;transition:width .1s linear;}
+
+  /* scrollspy active nav link */
+  nav.links a.active{color:var(--text);}
+  nav.links a.active::after{width:100%;}
 
   @media(max-width:920px){
     nav.links{display:none;}
     .nav-cta{display:none;}
     .burger{display:flex;}
     .about-grid,.two-col{grid-template-columns:1fr;gap:36px;}
+    .hero-grid{grid-template-columns:1fr;gap:40px;}
+    .hero-photo-wrap{order:-1;max-width:220px;margin:0 auto;}
+    .hero{padding-top:120px;min-height:auto;justify-content:flex-start;}
     .skills-grid{grid-template-columns:repeat(2,1fr);}
     .project-grid{grid-template-columns:1fr;}
     .edu-mini-grid{grid-template-columns:1fr;}
     .contact-box{grid-template-columns:1fr;padding:40px 26px;}
   }
   @media(max-width:560px){
-    .wrap{padding:0 20px;}
+    .wrap{padding-left:20px;padding-right:20px;}
     section{padding:80px 0;}
     .skills-grid{grid-template-columns:1fr;}
     .hero-stats .stat{flex:1 1 45%;}
@@ -301,6 +348,8 @@
 </style>
 </head>
 <body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
 
 <header class="nav" id="siteNav">
   <div class="nav-inner">
@@ -321,21 +370,34 @@
 
   <!-- HERO -->
   <section class="hero wrap">
-    <div class="tag-row reveal"><span class="dot-live"></span> Available for internships &amp; collaborations · Kerala, India</div>
-    <h1>
-      <span class="line reveal">Jumail Vahid <span class="grad">PT</span></span>
-    </h1>
-    <p class="role reveal">
-      I'm a <strong>B.Tech Artificial Intelligence &amp; Machine Learning</strong> student who builds
-      <strong>AI-powered systems</strong>, computer vision projects and modern web experiences —
-      turning curiosity into working software.
-    </p>
-    <div class="hero-actions reveal">
-      <a href="#projects" class="btn btn-primary">
-        View my work
-        <svg viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H4.5M11.5 2.5V9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-      <a href="#contact" class="btn btn-ghost">Get in touch</a>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="tag-row reveal"><span class="dot-live"></span> Available for internships &amp; collaborations · Kerala, India</div>
+        <h1>
+          <span class="line reveal">Jumail Vahid <span class="grad">PT</span></span>
+        </h1>
+        <p class="role reveal">
+          I'm a <strong>B.Tech Artificial Intelligence &amp; Machine Learning</strong> student who builds
+          <strong>AI-powered systems</strong>, computer vision projects and modern web experiences —
+          turning curiosity into working software.
+        </p>
+        <div class="hero-actions reveal">
+          <a href="#projects" class="btn btn-primary">
+            View my work
+            <svg viewBox="0 0 14 14" fill="none"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H4.5M11.5 2.5V9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#contact" class="btn btn-ghost">Get in touch</a>
+        </div>
+      </div>
+      <div class="hero-photo-wrap reveal">
+        <div class="hero-photo-blob" data-parallax="0.14"></div>
+        <div class="hero-photo" data-parallax="0.05">
+          <img src="assets/jumail-vahid.jpg" alt="Jumail Vahid PT" width="900" height="1200">
+        </div>
+        <div class="hero-photo-badge">
+          <span class="dot-live"></span> Open to opportunities
+        </div>
+      </div>
     </div>
     <div class="hero-stats reveal">
       <div class="stat"><h3>10+</h3><p>AI / ML &amp; web projects built</p></div>
@@ -733,6 +795,42 @@
     entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { threshold: 0.12 });
   revealEls.forEach(el => io.observe(el));
+
+  // scroll progress bar
+  const progressBar = document.getElementById('scrollProgress');
+  const parallaxEls = document.querySelectorAll('[data-parallax]');
+  const navLinks = document.querySelectorAll('nav.links a[href^="#"]');
+  const spySections = Array.from(navLinks)
+    .map(a => document.querySelector(a.getAttribute('href')))
+    .filter(Boolean);
+
+  let ticking = false;
+  function onScroll(){
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = pct + '%';
+
+    parallaxEls.forEach(el => {
+      const speed = parseFloat(el.dataset.parallax) || 0.05;
+      const shift = Math.min(scrollTop, 900) * speed;
+      el.style.transform = `translate3d(0, ${shift}px, 0)`;
+    });
+
+    let current = null;
+    for(const sec of spySections){
+      if(sec.getBoundingClientRect().top - 140 <= 0) current = sec;
+    }
+    navLinks.forEach(a => {
+      a.classList.toggle('active', current && a.getAttribute('href') === '#' + current.id);
+    });
+
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if(!ticking){ requestAnimationFrame(onScroll); ticking = true; }
+  });
+  onScroll();
 </script>
 
 </body>
