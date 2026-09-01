@@ -4,8 +4,8 @@
    ========================================================================== */
 
 :root {
-  --bg: #F8F8F6;
-  --bg-alt: #FFFFFF;
+  --bg: #F2F4EF;
+  --bg-alt: #FFFBD1;
   --text: #171717;
   --text-soft: #6B7280;
   --accent: #2563EB;
@@ -158,13 +158,13 @@ h1, h2, h3, h4 {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 100;
-  background: rgba(248, 248, 246, 0);
+  background: rgba(242, 244, 239, 0);
   border-bottom: 1px solid transparent;
   transition: background .35s var(--ease), border-color .35s var(--ease), backdrop-filter .35s var(--ease), box-shadow .35s var(--ease);
 }
 
 .nav.scrolled {
-  background: rgba(248, 248, 246, 0.78);
+  background: rgba(242, 244, 239, 0.78);
   backdrop-filter: blur(14px) saturate(160%);
   -webkit-backdrop-filter: blur(14px) saturate(160%);
   border-bottom: 1px solid var(--border);
@@ -236,7 +236,7 @@ h1, h2, h3, h4 {
   flex-direction: column;
   gap: 4px;
   padding: 8px 32px 24px;
-  background: rgba(248, 248, 246, 0.98);
+  background: rgba(242, 244, 239, 0.98);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
 }
